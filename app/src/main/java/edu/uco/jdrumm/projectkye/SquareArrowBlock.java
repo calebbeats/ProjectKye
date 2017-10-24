@@ -7,7 +7,7 @@ package edu.uco.jdrumm.projectkye;
 public class SquareArrowBlock extends BaseObject {
     public SquareArrowBlock(int x, int y) {
         super(x, y);
-        icon.setImageResource(R.drawable.SquareArrowBlock);
+        icon.setImageResource(R.drawable.squarearrowblock);
     }
 
     @Override

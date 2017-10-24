@@ -8,7 +8,7 @@ public class HorizontalMagnet extends BaseObject {
 
     public HorizontalMagnet(int x, int y) {
         super(x, y);
-        icon.setImageResource(R.drawable.HorizontalMagnet);
+        icon.setImageResource(R.drawable.horizontalmagnet);
     }
 
     @Override

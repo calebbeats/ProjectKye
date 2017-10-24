@@ -8,7 +8,7 @@ public class Diamond extends BaseObject {
 
     public Diamond(int x, int y) {
         super(x, y);
-        icon.setImageResource(R.drawable.Diamond);
+        icon.setImageResource(R.drawable.diamond);
     }
 
     @Override

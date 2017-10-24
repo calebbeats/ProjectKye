@@ -8,7 +8,7 @@ public class VerticalMagnet extends BaseObject {
 
     public VerticalMagnet(int x, int y) {
         super(x, y);
-        icon.setImageResource(R.drawable.VerticalMagnet);
+        icon.setImageResource(R.drawable.verticalmagnet);
     }
 
     @Override

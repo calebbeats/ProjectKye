@@ -7,7 +7,7 @@ package edu.uco.jdrumm.projectkye;
 public class MoveableBlock extends BaseObject {
     public MoveableBlock(int x, int y) {
         super(x, y);
-        icon.setImageResource(R.drawable.MoveableBlock);
+        icon.setImageResource(R.drawable.moveableblock);
     }
 
     @Override
