@@ -9,20 +9,82 @@ import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 public class GameActivity extends AppCompatActivity
 {
 
     private myCanvas myCanvas;
+    private Button lbutton, rbutton, ubutton, dbutton;
+
+    private boolean left, right, up, down;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        lbutton = (Button) findViewById(R.id.lbutton);
+        lbutton.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    left = true;
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                    left = false;
+                return true;
+            }
+        });
+
+        rbutton = (Button) findViewById(R.id.rbutton);
+        rbutton.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    right = true;
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                    right = false;
+                return true;
+            }
+        });
+
+        ubutton = (Button) findViewById(R.id.ubutton);
+        ubutton.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    up = true;
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                    up = false;
+                return true;
+            }
+        });
+
+        dbutton = (Button) findViewById(R.id.dbutton);
+        dbutton.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    down = true;
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                    down = false;
+                return true;
+            }
+        });
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.draw_frame);
         myCanvas = new myCanvas(getApplicationContext());
@@ -33,7 +95,6 @@ public class GameActivity extends AppCompatActivity
     private class myCanvas extends SurfaceView
     {
         private int x, y;
-        private int RADIUS = 100;
         private DisplayMetrics display;
         private int displayWidth, displayHeight;
         private int canvasWidth, canvasHeight;
@@ -50,8 +111,8 @@ public class GameActivity extends AppCompatActivity
             displayWidth = display.widthPixels;
             displayHeight = display.heightPixels;
 
-            x = displayWidth / 2;
-            y = displayHeight / 2;
+            x = 0;//displayWidth / 2;
+            y = 0;//displayHeight / 2;
 
             surfaceHolder = getHolder();
             surfaceHolder.addCallback(new SurfaceHolderListener());
@@ -80,13 +141,23 @@ public class GameActivity extends AppCompatActivity
                             long currTime = System.currentTimeMillis();
                             double elapsedTime = currTime - prevTime;
 
+                            if(left)
+                                myCanvas.x -= elapsedTime;
+                            if(right)
+                                myCanvas.x += elapsedTime;
+                            if(up)
+                                myCanvas.y -= elapsedTime;
+                            if(down)
+                                myCanvas.y += elapsedTime;
+
                             canvas.drawColor(Color.WHITE);
 
                             Paint p = new Paint();
                             p.setColor(Color.RED);
                             Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.kye);
-                            canvas.drawBitmap(b, myCanvas.x - b.getWidth() / 2, 0, p);
+                            canvas.drawBitmap(b, myCanvas.x, myCanvas.y, p);
 
+                            prevTime = currTime;
                             myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
                         }
                     }
