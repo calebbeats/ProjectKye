@@ -131,7 +131,7 @@ public class GameActivity extends AppCompatActivity
                 public void run()
                 {
                     long prevTime = System.currentTimeMillis();
-                    Canvas canvas = null;
+                    Canvas canvas;
 
                     while(!Thread.currentThread().isInterrupted())
                     {
