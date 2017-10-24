@@ -22,4 +22,9 @@ public abstract class BaseObject {
     public abstract void checkNextCordinate(int nextX, int nextY);
     //Does the necessary action for when player object collides;
     public abstract void action();
+
+    public ImageView getIcon()
+    {
+        return icon;
+    }
 }
