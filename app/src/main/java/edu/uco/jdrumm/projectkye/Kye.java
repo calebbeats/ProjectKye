@@ -10,7 +10,7 @@ public class Kye extends BaseObject {
     public Kye(int x, int y)
     {
         super(x,y);
-        icon.setImageResource(R.drawable.kyee);
+        icon = R.drawable.kye;
     }
 
     @Override

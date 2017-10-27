@@ -9,7 +9,7 @@ public class EmpytBlock extends BaseObject {
     public EmpytBlock(int x, int y)
     {
         super(x, y);
-        icon.setImageResource(R.drawable.emptyblock);
+        icon = 0;//R.drawable.emptyblock;
     }
 
     @Override

@@ -4,11 +4,13 @@ package edu.uco.jdrumm.projectkye;
  * Created by caleb on 10/23/2017.
  */
 
-public class Diamond extends BaseObject {
+public class Diamond extends BaseObject implements Destroyable
+{
 
-    public Diamond(int x, int y) {
+    public Diamond(int x, int y)
+    {
         super(x, y);
-        icon.setImageResource(R.drawable.diamond);
+        icon = R.drawable.diamond;
     }
 
     @Override

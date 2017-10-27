@@ -1,13 +1,14 @@
 package edu.uco.jdrumm.projectkye;
 
-/**
- * Created by caleb on 10/23/2017.
- */
+public class SquareArrowBlock extends BaseObject implements Moveable
+{
 
-public class SquareArrowBlock extends BaseObject {
-    public SquareArrowBlock(int x, int y) {
+    Direction d;
+
+    public SquareArrowBlock(int x, int y, Direction d)
+    {
         super(x, y);
-        icon.setImageResource(R.drawable.squarearrowblock);
+        this.d = d;
     }
 
     @Override
@@ -18,5 +19,22 @@ public class SquareArrowBlock extends BaseObject {
     @Override
     public void action() {
 
+    }
+
+    @Override
+    public int getIcon()
+    {
+        switch(d)
+        {
+            case UP:
+                return R.drawable.squarrowu;
+            case RIGHT:
+                return R.drawable.squarrowr;
+            case DOWN:
+                return R.drawable.squarrowd;
+            default:
+                return R.drawable.squarrowl;
+
+        }
     }
 }

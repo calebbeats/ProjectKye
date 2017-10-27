@@ -9,7 +9,7 @@ public class WallBlock extends BaseObject {
 
     public WallBlock(int x, int y) {
         super(x, y);
-        icon.setImageResource(R.drawable.wallblock);
+        icon= R.drawable.wall;
     }
 
     @Override

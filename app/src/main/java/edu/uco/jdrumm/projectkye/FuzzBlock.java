@@ -4,10 +4,12 @@ package edu.uco.jdrumm.projectkye;
  * Created by caleb on 10/23/2017.
  */
 
-public class MoveableBlock extends BaseObject {
-    public MoveableBlock(int x, int y) {
+public class FuzzBlock extends BaseObject implements Destroyable
+{
+    public FuzzBlock(int x, int y)
+    {
         super(x, y);
-        icon.setImageResource(R.drawable.moveableblock);
+        icon = R.drawable.block2;
     }
 
     @Override

@@ -4,11 +4,12 @@ package edu.uco.jdrumm.projectkye;
  * Created by caleb on 10/23/2017.
  */
 
-public class HorizontalMagnet extends BaseObject {
+public class HorizontalMagnet extends BaseObject implements Moveable
+{
 
     public HorizontalMagnet(int x, int y) {
         super(x, y);
-        icon.setImageResource(R.drawable.horizontalmagnet);
+        icon = R.drawable.magnethorizontal;
     }
 
     @Override

@@ -22,7 +22,10 @@ public class GameActivity extends AppCompatActivity
     private myCanvas myCanvas;
     private Button lbutton, rbutton, ubutton, dbutton;
 
+    //Inputs. True if currently pressed, false otherwise
     private boolean left, right, up, down;
+
+    private GameBoard gameBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -90,6 +93,9 @@ public class GameActivity extends AppCompatActivity
         myCanvas = new myCanvas(getApplicationContext());
 
         relativeLayout.addView(myCanvas);
+
+        //Initialize Game Objects
+        gameBoard = new GameBoard();
     }
 
     private class myCanvas extends SurfaceView
@@ -141,21 +147,30 @@ public class GameActivity extends AppCompatActivity
                             long currTime = System.currentTimeMillis();
                             double elapsedTime = currTime - prevTime;
 
-                            if(left)
-                                myCanvas.x -= elapsedTime;
-                            if(right)
-                                myCanvas.x += elapsedTime;
-                            if(up)
-                                myCanvas.y -= elapsedTime;
-                            if(down)
-                                myCanvas.y += elapsedTime;
+                            if(left) {
+                                gameBoard.move(Direction.LEFT);
+                                left = false;
+                            }
+                            if(right) {
+                                gameBoard.move(Direction.RIGHT);
+                                right = false;
+                            }
+                            if(up) {
+                                gameBoard.move(Direction.UP);
+                                up = false;
+                            }
+                            if(down) {
+                                gameBoard.move(Direction.DOWN);
+                                down = false;
+                            }
 
                             canvas.drawColor(Color.WHITE);
 
                             Paint p = new Paint();
                             p.setColor(Color.RED);
-                            Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.kye);
-                            canvas.drawBitmap(b, myCanvas.x, myCanvas.y, p);
+                            //Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.kye);
+                            //canvas.drawBitmap(b, myCanvas.x, myCanvas.y, p);
+                            gameBoard.draw(canvas, getResources());
 
                             prevTime = currTime;
                             myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
