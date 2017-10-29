@@ -12,14 +12,4 @@ public class Diamond extends BaseObject implements Destroyable
         super(x, y);
         icon = R.drawable.diamond;
     }
-
-    @Override
-    public void checkNextCordinate(int nextX, int nextY) {
-
-    }
-
-    @Override
-    public void action() {
-
-    }
 }

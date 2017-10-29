@@ -11,14 +11,4 @@ public class Block extends BaseObject implements Moveable
         super(x, y);
         icon = R.drawable.block;
     }
-
-    @Override
-    public void checkNextCordinate(int nextX, int nextY) {
-
-    }
-
-    @Override
-    public void action() {
-
-    }
 }

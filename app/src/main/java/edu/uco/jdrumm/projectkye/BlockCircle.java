@@ -11,14 +11,4 @@ public class BlockCircle extends BaseObject implements Moveable
         super(x, y);
         icon = R.drawable.block3;
     }
-
-    @Override
-    public void checkNextCordinate(int nextX, int nextY) {
-
-    }
-
-    @Override
-    public void action() {
-
-    }
 }

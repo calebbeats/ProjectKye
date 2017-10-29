@@ -164,6 +164,7 @@ public class GameActivity extends AppCompatActivity
                                 down = false;
                             }
 
+                            gameBoard.updateGameObjects();
                             canvas.drawColor(Color.WHITE);
 
                             Paint p = new Paint();
@@ -174,6 +175,14 @@ public class GameActivity extends AppCompatActivity
 
                             prevTime = currTime;
                             myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
+
+                            /*
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            */
                         }
                     }
                 }

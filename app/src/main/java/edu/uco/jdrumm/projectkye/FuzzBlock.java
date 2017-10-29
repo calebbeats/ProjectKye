@@ -11,14 +11,4 @@ public class FuzzBlock extends BaseObject implements Destroyable
         super(x, y);
         icon = R.drawable.block2;
     }
-
-    @Override
-    public void checkNextCordinate(int nextX, int nextY) {
-
-    }
-
-    @Override
-    public void action() {
-
-    }
 }

@@ -11,14 +11,4 @@ public class EmpytBlock extends BaseObject {
         super(x, y);
         icon = 0;//R.drawable.emptyblock;
     }
-
-    @Override
-    public void checkNextCordinate(int nextX, int nextY) {
-
-    }
-
-    @Override
-    public void action() {
-
-    }
 }
