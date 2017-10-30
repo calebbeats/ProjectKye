@@ -157,24 +157,17 @@ public class GameBoard {
             val = moveGameObject(board[cordX][cordY], o.getCordX() - 2 * (o.getCordX() - cordX), o.getCordY() - 2 * (o.getCordY() - cordY));
         if(!val)
             return false;
-        removeGameObject(o.getCordX(), o.getCordY());
+        board[o.getCordX()][o.getCordY()] = null;
         o.setCordX(cordX);
         o.setCordY(cordY);
-        board[cordX][ cordY] = o;
+        replaceGameObject(o, cordX, cordY);
         return true;
     }
 
-    private void removeGameObject(int cordX, int cordY)
+    private void replaceGameObject(BaseObject o, int cordX, int cordY)
     {
-        BaseObject o = board[cordX][cordY];
-
-        if(o instanceof Diamond)
-        {
-            //Do something
-        }
-
-        gameObjects.remove(o);
-        board[cordX][cordY] = null;
+        gameObjects.remove(board[cordX][cordY]);
+        board[cordX][cordY] = o;
     }
 
     private boolean validMove(BaseObject o, BaseObject o2)
@@ -189,8 +182,6 @@ public class GameBoard {
             s2 = o2.getClass().toString();
         else
             s2 = "NULL";
-
-        System.out.println(s1 + " " + s2);
 
         if((o2 instanceof edu.uco.jdrumm.projectkye.Destroyable) && !(o instanceof Kye))
             return false;
