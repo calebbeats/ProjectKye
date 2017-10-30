@@ -163,7 +163,15 @@ public class GameActivity extends AppCompatActivity
                                 down = false;
                             }
 
+
                             gameBoard.updateGameObjects();
+
+                            if(gameBoard.levelFinished)
+                            {
+                                myCanvas.drawingThread.interrupt();
+                                Intent i = new Intent(GameActivity.this,MainActivity.class);
+                                startActivity(i);
+                            }
                             canvas.drawColor(Color.WHITE);
 
                             Paint p = new Paint();
@@ -195,11 +203,7 @@ public class GameActivity extends AppCompatActivity
             // actual canvas size is avaliable at runtime rendering
             // same as the screen size if full screen with no title bar
             // style = @android:style/Theme.NoTitleBar.Fullscreen
-            if(gameBoard.levelFinished)
-            {
-                Intent i = new Intent(GameActivity.this,MainActivity.class);
-                startActivity(i);
-            }
+
             myCanvas.canvasWidth = w;
             myCanvas.canvasHeight = h;
         }
