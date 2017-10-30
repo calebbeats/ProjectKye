@@ -4,11 +4,8 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.provider.Settings;
 
 import java.util.ArrayList;
-
-import javax.security.auth.Destroyable;
 
 /**
  * Created by caleb on 10/23/2017.
@@ -20,15 +17,21 @@ public class GameBoard {
     public Level currentLevel;
     public Level nextLevel;
 
+    public boolean levelFinished;
+
+
     private Kye kye;
     private ArrayList<BaseObject> gameObjects, currentMagnetized;
 
     public GameBoard()
     {
+        levelFinished = false;
         board = new BaseObject[30][20];
         gameObjects = new ArrayList<>();
         kye = new Kye(0, 0);
         addGameObject(kye, 0, 0);
+        BaseObject t = new Diamond(0,1);
+        addGameObject(t, 0,1);
         for(int i = 0; i < 30; i++)
             for(int j = 0; j < 20; j++)
             {
@@ -40,7 +43,7 @@ public class GameBoard {
                     int rand = (int) (Math.random() * 6);
                     switch (rand) {
                         case 0:
-                            o = new Diamond(i, j);
+                            o = new Block(i, j);
                             break;
                         case 1:
                             o = new WallBlock(i, j);
@@ -158,6 +161,8 @@ public class GameBoard {
         return true;
     }
 
+
+
     private boolean validMove(BaseObject o, BaseObject o2)
     {
         String s1, s2;
@@ -205,6 +210,11 @@ public class GameBoard {
         return cordX >= 0 && cordX <= 29 && cordY >= 0 && cordY <= 19;
     }
 
+    public boolean isFinished()
+    {
+        return levelFinished;
+    }
+
     public boolean isEmpty(int cordX, int cordY)
     {
         return board[cordX][cordY] == null;
@@ -214,9 +224,17 @@ public class GameBoard {
     {
         currentMagnetized = new ArrayList<>(16);
 
+        levelFinished = true;
+        System.out.println("Level Finished : " + levelFinished);
+
         for(int i = 0; i < gameObjects.size(); i++)
         {
             BaseObject o = gameObjects.get(i);
+            if(o instanceof Diamond)
+            {
+                levelFinished = false;
+                System.out.println("Level Finished : " + levelFinished);
+            }
             if(o instanceof HorizontalMagnet)
             {
                 BaseObject left = null, right = null;
@@ -289,6 +307,7 @@ public class GameBoard {
                 }
             }
         }
+
     }
 }
 

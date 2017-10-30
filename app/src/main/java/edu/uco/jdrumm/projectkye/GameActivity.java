@@ -1,13 +1,12 @@
 package edu.uco.jdrumm.projectkye;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -196,6 +195,11 @@ public class GameActivity extends AppCompatActivity
             // actual canvas size is avaliable at runtime rendering
             // same as the screen size if full screen with no title bar
             // style = @android:style/Theme.NoTitleBar.Fullscreen
+            if(gameBoard.levelFinished)
+            {
+                Intent i = new Intent(GameActivity.this,MainActivity.class);
+                startActivity(i);
+            }
             myCanvas.canvasWidth = w;
             myCanvas.canvasHeight = h;
         }
