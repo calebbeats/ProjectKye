@@ -157,7 +157,7 @@ public class GameBoard {
             val = moveGameObject(board[cordX][cordY], o.getCordX() - 2 * (o.getCordX() - cordX), o.getCordY() - 2 * (o.getCordY() - cordY));
         if(!val)
             return false;
-        board[o.getCordX()][o.getCordY()] = null;
+        removeGameObject(o.getCordX(), o.getCordY());
         o.setCordX(cordX);
         o.setCordY(cordY);
         board[cordX][ cordY] = o;
