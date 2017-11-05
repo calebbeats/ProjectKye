@@ -153,13 +153,12 @@ public class GameBoard {
         nextLevel = l;
     }
 
-    public void draw(Canvas canvas, Resources resources)
+    public void draw(Canvas canvas, Resources resources, float density)
     {
-        float ratio = ((float) canvas.getWidth())/canvas.getHeight();
         for(int i = 0; i < 30; i++)
             for(int j = 0; j < 20; j++)
                 if(board[i][j] != null)
-                    canvas.drawBitmap(BitmapFactory.decodeResource(resources, board[i][j].getIcon()), i * ratio * 32, j * ratio * 32, new Paint());
+                    canvas.drawBitmap(BitmapFactory.decodeResource(resources, board[i][j].getIcon()), i * density * 16, j * density * 16, new Paint());
     }
 
     public Kye getKye()

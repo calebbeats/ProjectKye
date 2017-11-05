@@ -105,6 +105,7 @@ public class GameActivity extends AppCompatActivity
         private int canvasWidth, canvasHeight;
         private SurfaceHolder surfaceHolder;
         private Thread drawingThread, inputThread;
+        private float density;
 
         public myCanvas(Context context)
         {
@@ -121,6 +122,8 @@ public class GameActivity extends AppCompatActivity
 
             surfaceHolder = getHolder();
             surfaceHolder.addCallback(new SurfaceHolderListener());
+
+            density = getResources().getDisplayMetrics().density;
         }
     }
 
@@ -161,7 +164,7 @@ public class GameActivity extends AppCompatActivity
                             p.setColor(Color.RED);
                             //Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.kye);
                             //canvas.drawBitmap(b, myCanvas.x, myCanvas.y, p);
-                            gameBoard.draw(canvas, getResources());
+                            gameBoard.draw(canvas, getResources(), myCanvas.density);
 
                             prevTime = currTime;
                             myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
