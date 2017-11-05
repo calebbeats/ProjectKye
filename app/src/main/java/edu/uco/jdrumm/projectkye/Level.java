@@ -6,11 +6,25 @@ package edu.uco.jdrumm.projectkye;
 
 public abstract class Level {
 
-    public Level()
-    {
+    public Kye kye;
+    private Level nextLevel;
 
+    public Level(Kye k)
+    {
+        kye = k;
     }
+
     public abstract void populateBoard(GameBoard b);
+
+    public Level getNextLevel()
+    {
+        return nextLevel;
+    }
+
+    public void setNextLevel(Level l)
+    {
+        nextLevel = l;
+    }
 }
 
 

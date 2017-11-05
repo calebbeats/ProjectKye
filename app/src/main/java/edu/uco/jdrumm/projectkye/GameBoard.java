@@ -4,11 +4,8 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.provider.Settings;
 
 import java.util.ArrayList;
-
-import javax.security.auth.Destroyable;
 
 /**
  * Created by caleb on 10/23/2017.
@@ -28,19 +25,24 @@ public class GameBoard {
     private ArrayList<BaseObject> gameObjects, currentMagnetized;
     private ArrayList<Actor> actors;
 
-    public GameBoard()
+    public GameBoard(int i)
     {
         levelFinished = false;
         board = new BaseObject[30][20];
         gameObjects = new ArrayList<>();
         actors = new ArrayList<>();
         inputQueue = new ArrayList<>();
+        if(i == 0)
+        {
+            currentLevel = new Level1(getKye());
+        }
+        /*
         kye = new Kye(1, 1);
         addGameObject(kye, 1, 1);
         BaseObject t = new Diamond(1,2);
         addGameObject(t, 1, 2);
         //addGameObject(new SquareArrowBlock(29, 19, Direction.LEFT), 29, 19);
-
+        /*
         for(int i = 0; i < 30; i++)
         {
             addGameObject(new Rotator(i, 0, Rotation.COUNTER_CLOCKWISE), i, 0);
@@ -91,6 +93,7 @@ public class GameBoard {
                     addGameObject(o, i, j);
                 }
             }
+            */
 
     }
 
@@ -123,6 +126,11 @@ public class GameBoard {
         for(int i = 0; i < 30; i++)
             for(int j = 0; j < 20; j++)
                 board[i][j] = null;
+
+        for(int i=0; i < actors.size();i++)
+        {
+            actors.remove(i);
+        }
     }
 
     public void addGameObject(BaseObject obj, int cordX, int cordY)
@@ -267,6 +275,25 @@ public class GameBoard {
         {
             a.act(this);
         }
+
+        levelFinished  = true;
+        for(int i = 0; i < gameObjects.size(); i++) {
+            BaseObject o = gameObjects.get(i);
+            if (o instanceof Diamond) {
+                levelFinished = false;
+
+            }
+        }
+
+        if(levelFinished)
+        {
+            System.out.println("LEVEL Finished");
+            kye = null;
+            this.clearBoard();
+            currentLevel.getNextLevel().populateBoard(this);
+            currentLevel = currentLevel.getNextLevel();
+        }
+
         /*
         currentMagnetized = new ArrayList<>(16);
 
