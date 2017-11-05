@@ -5,13 +5,13 @@ package edu.uco.jdrumm.projectkye;
  */
 
 public class Level3 extends Level {
-    public Level3(Kye k) {
-        super(k);
+    public Level3() {
+        super();
     }
 
     @Override
     public void populateBoard(GameBoard b) {
-        kye = new Kye(14, 10);
+        Kye kye = new Kye(14, 10);
         b.addGameObject(kye, 14, 10);
 
         BaseObject t = new Block(13,10);

@@ -6,16 +6,16 @@ package edu.uco.jdrumm.projectkye;
 
 public class Level2 extends Level {
 
-    public Level2(Kye k)
+    public Level2()
     {
-        super(k);
-        setNextLevel(new Level3(k));
+        super();
+        setNextLevel(new Level3());
     }
 
 
     @Override
     public void populateBoard(GameBoard b) {
-        kye = new Kye(14, 10);
+        Kye kye = new Kye(14, 10);
         b.addGameObject(kye, 14, 10);
 
         BaseObject t = new Diamond(0,0);
@@ -24,7 +24,7 @@ public class Level2 extends Level {
         b.addGameObject(t, 0, 5);
         t = new Diamond(0,10);
         b.addGameObject(t, 0, 10);
-        t = new Diamond(0,15);
-        b.addGameObject(t, 0, 15);
+        //t = new Diamond(0,15);
+        //b.addGameObject(t, 0, 15);
     }
 }

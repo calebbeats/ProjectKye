@@ -94,7 +94,7 @@ public class GameActivity extends AppCompatActivity
 
         //Initialize Game Objects
         gameBoard = new GameBoard(0);
-        Level1 lvl1 = new Level1(gameBoard.getKye());
+        Level1 lvl1 = new Level1();
         lvl1.populateBoard(gameBoard);
     }
 

@@ -34,7 +34,7 @@ public class GameBoard {
         inputQueue = new ArrayList<>();
         if(i == 0)
         {
-            currentLevel = new Level1(getKye());
+            currentLevel = new Level1();
         }
         /*
         kye = new Kye(1, 1);
@@ -129,8 +129,13 @@ public class GameBoard {
 
         for(int i=0; i < actors.size();i++)
         {
-            actors.remove(i);
+            actors = new ArrayList <Actor>();
         }
+        for(int i=0; i < gameObjects.size();i++)
+        {
+            gameObjects = new ArrayList<BaseObject>();
+        }
+
     }
 
     public void addGameObject(BaseObject obj, int cordX, int cordY)
@@ -287,8 +292,6 @@ public class GameBoard {
 
         if(levelFinished)
         {
-            System.out.println("LEVEL Finished");
-            kye = null;
             this.clearBoard();
             currentLevel.getNextLevel().populateBoard(this);
             currentLevel = currentLevel.getNextLevel();
