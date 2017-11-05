@@ -1,7 +1,6 @@
 package edu.uco.jdrumm.projectkye;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -94,7 +93,9 @@ public class GameActivity extends AppCompatActivity
         relativeLayout.addView(myCanvas);
 
         //Initialize Game Objects
-        gameBoard = new GameBoard();
+        gameBoard = new GameBoard(0);
+        Level1 lvl1 = new Level1(gameBoard.getKye());
+        lvl1.populateBoard(gameBoard);
     }
 
     private class myCanvas extends SurfaceView
@@ -149,12 +150,7 @@ public class GameActivity extends AppCompatActivity
 
                             gameBoard.updateGameObjects();
 
-                            if(gameBoard.levelFinished)
-                            {
-                                myCanvas.drawingThread.interrupt();
-                                Intent i = new Intent(GameActivity.this,MainActivity.class);
-                                startActivity(i);
-                            }
+
                             canvas.drawColor(Color.WHITE);
 
                             Paint p = new Paint();
