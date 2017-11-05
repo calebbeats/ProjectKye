@@ -97,7 +97,7 @@ public class GameBoard {
 
     }
 
-    private Direction getRandomDirection()
+    public Direction getRandomDirection()
     {
         int i = (int) (Math.random() * 4);
         switch(i)
@@ -114,7 +114,7 @@ public class GameBoard {
         }
     }
 
-    private Rotation getRandomRotation()
+    public Rotation getRandomRotation()
     {
         if(Math.random() < 0.5)
             return Rotation.CLOCKWISE;
