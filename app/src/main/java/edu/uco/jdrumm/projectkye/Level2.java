@@ -9,6 +9,7 @@ public class Level2 extends Level {
     public Level2(Kye k)
     {
         super(k);
+        setNextLevel(new Level3(k));
     }
 
 
