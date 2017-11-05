@@ -12,4 +12,9 @@ public class Diamond extends BaseObject implements Destroyable
         super(x, y);
         icon = R.drawable.diamond;
     }
+
+    public int getFrequency()
+    {
+        return 20;
+    }
 }

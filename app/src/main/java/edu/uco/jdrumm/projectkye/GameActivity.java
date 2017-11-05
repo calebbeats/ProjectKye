@@ -104,7 +104,7 @@ public class GameActivity extends AppCompatActivity
         private int displayWidth, displayHeight;
         private int canvasWidth, canvasHeight;
         private SurfaceHolder surfaceHolder;
-        private Thread drawingThread;
+        private Thread drawingThread, inputThread;
 
         public myCanvas(Context context)
         {
@@ -145,24 +145,7 @@ public class GameActivity extends AppCompatActivity
                         {
                             long currTime = System.currentTimeMillis();
                             double elapsedTime = currTime - prevTime;
-
-                            if(left) {
-                                gameBoard.move(Direction.LEFT);
-                                left = false;
-                            }
-                            if(right) {
-                                gameBoard.move(Direction.RIGHT);
-                                right = false;
-                            }
-                            if(up) {
-                                gameBoard.move(Direction.UP);
-                                up = false;
-                            }
-                            if(down) {
-                                gameBoard.move(Direction.DOWN);
-                                down = false;
-                            }
-
+                            //System.out.println("Time: " + elapsedTime);
 
                             gameBoard.updateGameObjects();
 
@@ -183,18 +166,49 @@ public class GameActivity extends AppCompatActivity
                             prevTime = currTime;
                             myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
 
-                            /*
                             try {
-                                Thread.sleep(1000);
+                                if(elapsedTime < 100)
+                                    Thread.sleep((long)(100 - elapsedTime));
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            */
+
                         }
                     }
                 }
             });
             myCanvas.drawingThread.start();
+            myCanvas.inputThread = new Thread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    while(!Thread.currentThread().isInterrupted())
+                    {
+                        if (left)
+                        {
+                            gameBoard.pushToInputQueue(Direction.LEFT);
+                            left = false;
+                        }
+                        if (right)
+                        {
+                            gameBoard.pushToInputQueue(Direction.RIGHT);
+                            right = false;
+                        }
+                        if (up)
+                        {
+                            gameBoard.pushToInputQueue(Direction.UP);
+                            up = false;
+                        }
+                        if (down)
+                        {
+                            gameBoard.pushToInputQueue(Direction.DOWN);
+                            down = false;
+                        }
+                    }
+                }
+            });
+            myCanvas.inputThread.start();
         }
 
         @Override
@@ -213,6 +227,9 @@ public class GameActivity extends AppCompatActivity
         {
             if (myCanvas.drawingThread != null)
                 myCanvas.drawingThread.interrupt();
+
+            if (myCanvas.inputThread != null)
+                myCanvas.inputThread.interrupt();
         }
     }
 }

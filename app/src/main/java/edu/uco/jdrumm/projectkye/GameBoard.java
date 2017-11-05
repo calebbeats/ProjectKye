@@ -19,28 +19,44 @@ public class GameBoard {
     public BaseObject[][] board;
     public Level currentLevel;
     public Level nextLevel;
+    public ArrayList<Direction> inputQueue;
 
     public boolean levelFinished;
 
 
     private Kye kye;
     private ArrayList<BaseObject> gameObjects, currentMagnetized;
+    private ArrayList<Actor> actors;
 
     public GameBoard()
     {
         levelFinished = false;
         board = new BaseObject[30][20];
         gameObjects = new ArrayList<>();
-        kye = new Kye(0, 0);
-        addGameObject(kye, 0, 0);
-        BaseObject t = new Diamond(0,1);
-        addGameObject(t, 0,1);
+        actors = new ArrayList<>();
+        inputQueue = new ArrayList<>();
+        kye = new Kye(1, 1);
+        addGameObject(kye, 1, 1);
+        BaseObject t = new Diamond(1,2);
+        addGameObject(t, 1, 2);
+        //addGameObject(new SquareArrowBlock(29, 19, Direction.LEFT), 29, 19);
+
         for(int i = 0; i < 30; i++)
-            for(int j = 0; j < 20; j++)
+        {
+            addGameObject(new Rotator(i, 0, Rotation.COUNTER_CLOCKWISE), i, 0);
+            addGameObject(new Rotator(i, 19, Rotation.COUNTER_CLOCKWISE), i, 19);
+        }
+        for(int i = 1; i < 19; i++)
+        {
+            addGameObject(new Rotator(0, i, Rotation.COUNTER_CLOCKWISE), 0, i);
+            addGameObject(new Rotator(29, i, Rotation.COUNTER_CLOCKWISE), 29, i);
+        }
+        for(int i = 1; i < 29; i++)
+            for(int j = 1; j < 19; j++)
             {
                 if(i == 0 && j == 0)
                     i++;
-                if(Math.random() < 0.3)
+                if(Math.random() < 0.1)
                 {
                     BaseObject o = new Kye(0, 0);
                     int rand = (int) (Math.random() * 6);
@@ -75,6 +91,7 @@ public class GameBoard {
                     addGameObject(o, i, j);
                 }
             }
+
     }
 
     private Direction getRandomDirection()
@@ -110,9 +127,15 @@ public class GameBoard {
 
     public void addGameObject(BaseObject obj, int cordX, int cordY)
     {
+        if(board[cordX][cordY] != null)
+            return;
         board[cordX][cordY] = obj;
-        if(!(obj instanceof WallBlock) && !(obj instanceof Kye))
+        if(!(obj instanceof WallBlock))
+        {
             gameObjects.add(obj);
+            if(obj instanceof Actor)
+                actors.add((Actor) obj);
+        }
     }
 
     public void loadLevel()
@@ -132,10 +155,11 @@ public class GameBoard {
 
     public void draw(Canvas canvas, Resources resources)
     {
+        float ratio = ((float) canvas.getWidth())/canvas.getHeight();
         for(int i = 0; i < 30; i++)
             for(int j = 0; j < 20; j++)
                 if(board[i][j] != null)
-                    canvas.drawBitmap(BitmapFactory.decodeResource(resources, board[i][j].getIcon()), i * 42, j * 42, new Paint());
+                    canvas.drawBitmap(BitmapFactory.decodeResource(resources, board[i][j].getIcon()), i * ratio * 32, j * ratio * 32, new Paint());
     }
 
     public Kye getKye()
@@ -143,9 +167,14 @@ public class GameBoard {
         return kye;
     }
 
-    private boolean moveGameObject(BaseObject o, int cordX, int cordY)
+    public boolean moveGameObject(BaseObject o, int cordX, int cordY)
     {
-        if(!inBounds(cordX, cordY))
+        return moveGameObject(o, cordX, cordY, 0);
+    }
+
+    private boolean moveGameObject(BaseObject o, int cordX, int cordY, int depth)
+    {
+        if(!inBounds(cordX, cordY) || depth >= 2)
             return false;
         BaseObject o2 = board[cordX][cordY];
         if(o2 instanceof WallBlock || o2 instanceof Kye)
@@ -154,7 +183,7 @@ public class GameBoard {
             return false;
         boolean val = true;
         if(o2 instanceof Moveable)
-            val = moveGameObject(board[cordX][cordY], o.getCordX() - 2 * (o.getCordX() - cordX), o.getCordY() - 2 * (o.getCordY() - cordY));
+            val = moveGameObject(board[cordX][cordY], o.getCordX() - 2 * (o.getCordX() - cordX), o.getCordY() - 2 * (o.getCordY() - cordY), ++depth);
         if(!val)
             return false;
         board[o.getCordX()][o.getCordY()] = null;
@@ -166,7 +195,10 @@ public class GameBoard {
 
     private void replaceGameObject(BaseObject o, int cordX, int cordY)
     {
-        gameObjects.remove(board[cordX][cordY]);
+        BaseObject remove = board[cordX][cordY];
+        gameObjects.remove(remove);
+        if(remove instanceof Actor)
+            actors.remove((Actor) remove);
         board[cordX][cordY] = o;
     }
 
@@ -185,29 +217,27 @@ public class GameBoard {
 
         if((o2 instanceof edu.uco.jdrumm.projectkye.Destroyable) && !(o instanceof Kye))
             return false;
+
+        if(o instanceof SquareArrowBlock && o2 instanceof Rotator)
+            return false;
+
         return true;
     }
 
-    public void move(Direction d)
+    public void pushToInputQueue(Direction d)
     {
-        int dx = 0, dy = 0;
-        switch(d)
+        inputQueue.add(d);
+    }
+
+    public Direction popFromInputQueue()
+    {
+        if(inputQueue.size() > 0)
         {
-            case UP:
-                dy = -1;
-                break;
-            case RIGHT:
-                dx = 1;
-                break;
-            case DOWN:
-                dy = 1;
-                break;
-            default:
-                dx = -1;
+            Direction d = inputQueue.get(0);
+            inputQueue.remove(0);
+            return d;
         }
-
-        moveGameObject(kye, kye.getCordX() + dx, kye.getCordY() + dy);
-
+        return null;
     }
 
     public boolean inBounds(int cordX, int cordY)
@@ -225,8 +255,20 @@ public class GameBoard {
         return board[cordX][cordY] == null;
     }
 
+    public BaseObject getAt(int x, int y)
+    {
+        if(inBounds(x, y))
+            return board[x][y];
+        return null;
+    }
+
     public void updateGameObjects()
     {
+        for(Actor a : actors)
+        {
+            a.act(this);
+        }
+        /*
         currentMagnetized = new ArrayList<>(16);
 
         levelFinished = true;
@@ -312,6 +354,7 @@ public class GameBoard {
                 }
             }
         }
+        */
     }
 }
 

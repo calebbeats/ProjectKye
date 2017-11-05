@@ -7,13 +7,15 @@ package edu.uco.jdrumm.projectkye;
 public abstract class BaseObject {
 
     public int icon;
-    private int cordX;
-    private int cordY;
+    protected int x;
+    protected int y;
+    protected int frequency, frame;
 
     public BaseObject(int x, int y)
     {
         setCordX(x);
         setCordY(y);
+        frequency = frame = 0;
     }
 
     public int getIcon()
@@ -23,18 +25,18 @@ public abstract class BaseObject {
 
 
     public int getCordX() {
-        return cordX;
+        return x;
     }
 
-    public void setCordX(int cordX) {
-        this.cordX = cordX;
+    public void setCordX(int x) {
+        this.x = x;
     }
 
     public int getCordY() {
-        return cordY;
+        return y;
     }
 
-    public void setCordY(int cordY) {
-        this.cordY = cordY;
+    public void setCordY(int y) {
+        this.y = y;
     }
 }
