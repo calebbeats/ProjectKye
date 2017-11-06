@@ -1,6 +1,7 @@
 package edu.uco.jdrumm.projectkye;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -17,6 +18,7 @@ public class GameBoard {
     public Level currentLevel;
     public Level nextLevel;
     public ArrayList<Direction> inputQueue;
+    private Paint paint;
 
     public boolean levelFinished;
 
@@ -24,6 +26,9 @@ public class GameBoard {
     private Kye kye;
     private ArrayList<BaseObject> gameObjects, currentMagnetized;
     private ArrayList<Actor> actors;
+
+    private final int IMAGE_SIZE = 48;
+    private double factor;
 
     public GameBoard(int i)
     {
@@ -36,6 +41,8 @@ public class GameBoard {
         {
             currentLevel = new Level1();
         }
+        paint = new Paint();
+        factor = IMAGE_SIZE * 16.0 / 42;
         /*
         kye = new Kye(1, 1);
         addGameObject(kye, 1, 1);
@@ -67,7 +74,7 @@ public class GameBoard {
                             o = new Block(i, j);
                             break;
                         case 1:
-                            o = new WallBlock(i, j);
+                            o = new Wall(i, j);
                             break;
                         case 2:
                             int r = (int) (Math.random() * 3);
@@ -132,12 +139,12 @@ public class GameBoard {
 
     }
 
-    public void addGameObject(BaseObject obj, int cordX, int cordY)
+    public void addGameObject(BaseObject obj)
     {
-        if(board[cordX][cordY] != null)
+        if(board[obj.getCordX()][obj.getCordY()] != null)
             return;
-        board[cordX][cordY] = obj;
-        if(!(obj instanceof WallBlock))
+        board[obj.getCordX()][obj.getCordY()] = obj;
+        if(!(obj instanceof Wall))
         {
             gameObjects.add(obj);
             if(obj instanceof Actor)
@@ -160,12 +167,14 @@ public class GameBoard {
         nextLevel = l;
     }
 
-    public void draw(Canvas canvas, Resources resources, float density)
-    {
-        for(int i = 0; i < 30; i++)
-            for(int j = 0; j < 20; j++)
-                if(board[i][j] != null)
-                    canvas.drawBitmap(BitmapFactory.decodeResource(resources, board[i][j].getIcon()), i * density * 16, j * density * 16, new Paint());
+    public void draw(Canvas canvas, Resources resources, float density) {
+        for (int i = 0; i < 30; i++)
+            for (int j = 0; j < 20; j++)
+                if (board[i][j] != null)
+                {
+                    Bitmap b = BitmapFactory.decodeResource(resources, board[i][j].getIcon());
+                    canvas.drawBitmap(Bitmap.createScaledBitmap(b, (int) Math.ceil(factor * density), (int) Math.ceil(factor * density), true), ((int) Math.ceil(factor * density)) * i, ((int) Math.ceil(factor * density)) * j, paint);
+                }
     }
 
     public Kye getKye()
@@ -183,7 +192,7 @@ public class GameBoard {
         if(!inBounds(cordX, cordY) || depth >= 2)
             return false;
         BaseObject o2 = board[cordX][cordY];
-        if(o2 instanceof WallBlock || o2 instanceof Kye)
+        if(o2 instanceof Wall || o2 instanceof Kye)
             return false;
         if(!validMove(o, o2))
             return false;

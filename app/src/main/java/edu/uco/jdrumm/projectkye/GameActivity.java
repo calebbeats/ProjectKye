@@ -100,13 +100,11 @@ public class GameActivity extends AppCompatActivity
 
     private class myCanvas extends SurfaceView
     {
-        private int x, y;
         private DisplayMetrics display;
-        private int displayWidth, displayHeight;
-        private int canvasWidth, canvasHeight;
         private SurfaceHolder surfaceHolder;
         private Thread drawingThread, inputThread;
         private float density;
+        private final int FRAMES_PER_SECOND = 10;
 
         public myCanvas(Context context)
         {
@@ -114,12 +112,6 @@ public class GameActivity extends AppCompatActivity
 
             display = new DisplayMetrics();
             GameActivity.this.getWindowManager().getDefaultDisplay().getMetrics(display);
-            // screen size, not canvas size
-            displayWidth = display.widthPixels;
-            displayHeight = display.heightPixels;
-
-            x = 0;//displayWidth / 2;
-            y = 0;//displayHeight / 2;
 
             surfaceHolder = getHolder();
             surfaceHolder.addCallback(new SurfaceHolderListener());
@@ -139,7 +131,8 @@ public class GameActivity extends AppCompatActivity
                 @Override
                 public void run()
                 {
-                    long prevTime = System.currentTimeMillis();
+                    long startTime = System.currentTimeMillis();
+                    long cumTime = startTime;
                     Canvas canvas;
 
                     while(!Thread.currentThread().isInterrupted())
@@ -147,31 +140,25 @@ public class GameActivity extends AppCompatActivity
                         canvas = myCanvas.surfaceHolder.lockCanvas();
                         if(canvas != null)
                         {
-                            long currTime = System.currentTimeMillis();
-                            double elapsedTime = currTime - prevTime;
-                            //System.out.println("Time: " + elapsedTime);
-
-                            gameBoard.updateGameObjects();
-
-
-                            canvas.drawColor(Color.WHITE);
-
-                            Paint p = new Paint();
-                            p.setColor(Color.RED);
-                            //Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.kye);
-                            //canvas.drawBitmap(b, myCanvas.x, myCanvas.y, p);
-                            gameBoard.draw(canvas, getResources(), myCanvas.density);
-
-                            prevTime = currTime;
-                            myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
+                            long timePassed = System.currentTimeMillis() - cumTime;
 
                             try {
-                                if(elapsedTime < 100)
-                                    Thread.sleep((long)(100 - elapsedTime));
+                                if(timePassed < 1000 / myCanvas.FRAMES_PER_SECOND)
+                                    Thread.sleep(1000 / myCanvas.FRAMES_PER_SECOND - timePassed);
+                                else
+                                    Thread.sleep(5);
+                                System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
 
+                            cumTime += System.currentTimeMillis() - cumTime;
+                            gameBoard.updateGameObjects();
+                            canvas.drawColor(Color.WHITE);
+                            Paint p = new Paint();
+                            p.setColor(Color.RED);
+                            gameBoard.draw(canvas, getResources(), myCanvas.density);
+                            myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
                         }
                     }
                 }
@@ -216,9 +203,6 @@ public class GameActivity extends AppCompatActivity
             // actual canvas size is avaliable at runtime rendering
             // same as the screen size if full screen with no title bar
             // style = @android:style/Theme.NoTitleBar.Fullscreen
-
-            myCanvas.canvasWidth = w;
-            myCanvas.canvasHeight = h;
         }
 
         @Override

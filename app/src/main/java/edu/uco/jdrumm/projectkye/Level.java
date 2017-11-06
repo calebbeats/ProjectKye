@@ -8,13 +8,41 @@ public abstract class Level {
 
 
     private Level nextLevel;
+    protected BaseObject[] objects;
 
     public Level()
     {
 
     }
 
-    public abstract void populateBoard(GameBoard b);
+    public void populateBoard(GameBoard b)
+    {
+        createWalls(b);
+        createObjects();
+        populate(b);
+    }
+
+    private void createWalls(GameBoard b)
+    {
+        for(int i = 0; i < 30; i++)
+        {
+            b.addGameObject(new Wall(i, 0));
+            b.addGameObject(new Wall(i, 19));
+        }
+        for(int i = 1; i < 19; i++)
+        {
+            b.addGameObject(new Wall(0, i));
+            b.addGameObject(new Wall(29, i));
+        }
+    }
+
+    private void populate(GameBoard b)
+    {
+        for(BaseObject o : objects)
+            b.addGameObject(o);
+    }
+
+    protected abstract void createObjects();
 
     public Level getNextLevel()
     {

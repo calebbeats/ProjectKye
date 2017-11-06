@@ -2,9 +2,9 @@ package edu.uco.jdrumm.projectkye;
 
 public class SquareArrowBlock extends Actor implements Moveable
 {
-
     private Direction d;
     private int dx, dy;
+    private boolean stopped;
 
     public SquareArrowBlock(int x, int y, Direction d)
     {
@@ -106,13 +106,38 @@ public class SquareArrowBlock extends Actor implements Moveable
         }
     }
 
+    public void stop()
+    {
+        stopped = true;
+    }
+
     @Override
     public void action(GameBoard board)
     {
-        BaseObject o = board.getAt(x + dx, y + dy);
-        if(o == null)
-            board.moveGameObject(this, x + dx, y + dy);
-        else if(o instanceof Rotator)
-            rotate(((Rotator) o).getRotation());
+        if(!stopped)
+        {
+            BaseObject o = board.getAt(x + dx, y + dy);
+            if (o == null)
+                board.moveGameObject(this, x + dx, y + dy);
+            else if (o instanceof Rotator)
+                rotate(((Rotator) o).getRotation());
+        }
+        else
+        {
+            BaseObject o = board.getAt(x - 1, y);
+            if(o instanceof HorizontalMagnet)
+                return;
+            o = board.getAt(x + 1, y);
+            if(o instanceof HorizontalMagnet)
+                return;
+            o = board.getAt(x, y - 1);
+            if(o instanceof VerticalMagnet)
+                return;
+            o = board.getAt(x, y + 1);
+            if(o instanceof VerticalMagnet)
+                return;
+            stopped = false;
+            action(board); //Might remove this. This makes it so the piece can take its action right after becoming unstuck
+        }
     }
 }

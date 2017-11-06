@@ -22,11 +22,19 @@ public class HorizontalMagnet extends Actor implements Moveable
         if(o instanceof Kye)
             board.moveGameObject(this, x - 1, y);
         else if(o != null && o instanceof Moveable && !(o instanceof HorizontalMagnet))
+        {
             board.moveGameObject(o, x - 1, y);
+            if(o instanceof SquareArrowBlock)
+                ((SquareArrowBlock) o).stop();
+        }
 
         if(o2 instanceof Kye)
             board.moveGameObject(this, x + 1, y);
         else if(o2 != null && o2 instanceof Moveable && !(o2 instanceof HorizontalMagnet))
+        {
             board.moveGameObject(o2, x + 1, y);
+            if(o2 instanceof SquareArrowBlock)
+                ((SquareArrowBlock) o2).stop();
+        }
     }
 }

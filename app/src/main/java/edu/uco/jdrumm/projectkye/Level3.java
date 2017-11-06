@@ -10,21 +10,24 @@ public class Level3 extends Level {
     }
 
     @Override
-    public void populateBoard(GameBoard b) {
+    public void createObjects()
+    {
+        /*
         Kye kye = new Kye(14, 10);
-        b.addGameObject(kye, 14, 10);
+        b.addGameObject(kye);
 
         BaseObject t = new Block(13,10);
-        b.addGameObject(t, 13, 10);
+        b.addGameObject(t);
         t = new Block(15,10);
-        b.addGameObject(t, 15, 10);
+        b.addGameObject(t);
         t = new Block(14,11);
-        b.addGameObject(t, 14, 11);
+        b.addGameObject(t);
         t = new Block(14,9);
-        b.addGameObject(t, 14, 9);
+        b.addGameObject(t);
 
 
         t = new Diamond(0,15);
-        b.addGameObject(t, 0, 15);
+        b.addGameObject(t);
+        */
     }
 }

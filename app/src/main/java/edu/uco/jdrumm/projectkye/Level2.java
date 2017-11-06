@@ -14,17 +14,20 @@ public class Level2 extends Level {
 
 
     @Override
-    public void populateBoard(GameBoard b) {
+    public void createObjects()
+    {
+        /*
         Kye kye = new Kye(14, 10);
-        b.addGameObject(kye, 14, 10);
+        b.addGameObject(kye);
 
         BaseObject t = new Diamond(0,0);
-        b.addGameObject(t, 0, 0);
+        b.addGameObject(t);
         t = new Diamond(0,5);
-        b.addGameObject(t, 0, 5);
+        b.addGameObject(t);
         t = new Diamond(0,10);
-        b.addGameObject(t, 0, 10);
+        b.addGameObject(t);
         //t = new Diamond(0,15);
-        //b.addGameObject(t, 0, 15);
+        //b.addGameObject(t);
+        */
     }
 }
