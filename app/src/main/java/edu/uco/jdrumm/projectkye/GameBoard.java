@@ -127,14 +127,8 @@ public class GameBoard {
             for(int j = 0; j < 20; j++)
                 board[i][j] = null;
 
-        for(int i=0; i < actors.size();i++)
-        {
-            actors = new ArrayList <Actor>();
-        }
-        for(int i=0; i < gameObjects.size();i++)
-        {
-            gameObjects = new ArrayList<BaseObject>();
-        }
+        actors = new ArrayList <Actor>();
+        gameObjects = new ArrayList<BaseObject>();
 
     }
 
