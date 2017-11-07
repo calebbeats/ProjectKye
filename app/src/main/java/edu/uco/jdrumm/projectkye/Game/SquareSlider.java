@@ -2,12 +2,10 @@ package edu.uco.jdrumm.projectkye.Game;
 
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 import edu.uco.jdrumm.projectkye.R;
-import edu.uco.jdrumm.projectkye.Orientation.Rotation;
 
-public class SquareArrowBlock extends ActorRotatable implements Moveable
+public class SquareSlider extends ActorRotatable implements Moveable
 {
-
-    public SquareArrowBlock(int x, int y, Direction d)
+    public SquareSlider(int x, int y, Direction d)
     {
         super(x, y, d);
 

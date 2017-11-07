@@ -97,11 +97,6 @@ public class GameActivity extends AppCompatActivity
         myCanvas = new myCanvas(getApplicationContext());
 
         relativeLayout.addView(myCanvas);
-
-        //Initialize Game Objects
-        gameBoard = new GameBoard(0);
-        Level1 lvl1 = new Level1();
-        lvl1.populateBoard(gameBoard);
     }
 
     private class myCanvas extends SurfaceView
@@ -127,6 +122,11 @@ public class GameActivity extends AppCompatActivity
             surfaceHolder.addCallback(new SurfaceHolderListener());
 
             density = getResources().getDisplayMetrics().density;
+
+            //Initialize Game Objects
+            gameBoard = new GameBoard(0, getResources(), density);
+            Level1 lvl1 = new Level1();
+            lvl1.populateBoard(gameBoard);
         }
 
         @Override
@@ -187,7 +187,7 @@ public class GameActivity extends AppCompatActivity
                                     Thread.sleep(1000 / myCanvas.FRAMES_PER_SECOND - timePassed);
                                 else
                                     Thread.sleep(5);
-                                //System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
+                                System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

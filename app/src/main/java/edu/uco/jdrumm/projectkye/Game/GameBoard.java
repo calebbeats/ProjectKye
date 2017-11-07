@@ -7,11 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 import edu.uco.jdrumm.projectkye.Orientation.Rotation;
 import edu.uco.jdrumm.projectkye.Level.Level;
 import edu.uco.jdrumm.projectkye.Level.Level1;
+import edu.uco.jdrumm.projectkye.R;
 
 /**
  * Created by caleb on 10/23/2017.
@@ -30,17 +32,60 @@ public class GameBoard {
 
     private Kye kye;
     private ArrayList<BaseObject> gameObjects, currentMagnetized;
-    private ArrayList<Actor> actors;
+    private ArrayList<Actor> actors, actorsRemoved;
 
     private final int IMAGE_SIZE = 48;
     private double factor;
 
-    public GameBoard(int i)
+    private int actualSize;
+    private Resources resources;
+
+    HashMap<Integer, Bitmap> hm;
+
+    private final int[] images =
+            {
+                    R.drawable.block,
+                    R.drawable.block2,
+                    R.drawable.block3,
+                    R.drawable.diamond,
+                    R.drawable.kye,
+                    R.drawable.magnethorizontal,
+                    R.drawable.magnetvertical,
+                    R.drawable.monster1,
+                    R.drawable.rotatorclockwise,
+                    R.drawable.rotatorcounterclockwise,
+                    R.drawable.roundslideru,
+                    R.drawable.roundsliderr,
+                    R.drawable.roundsliderd,
+                    R.drawable.roundsliderl,
+                    R.drawable.sentryu,
+                    R.drawable.sentryr,
+                    R.drawable.sentryd,
+                    R.drawable.sentryl,
+                    R.drawable.squarrowu,
+                    R.drawable.squarrowr,
+                    R.drawable.squarrowd,
+                    R.drawable.squarrowl,
+                    R.drawable.wall1,
+                    R.drawable.wall2,
+                    R.drawable.wall3,
+                    R.drawable.wall4,
+                    R.drawable.wall5,
+                    R.drawable.wall6,
+                    R.drawable.wall7,
+                    R.drawable.wall8,
+                    R.drawable.wall9
+            };
+
+    public GameBoard(int i, Resources resources, float density)
     {
+        this.resources = resources;
+
         levelFinished = false;
         board = new BaseObject[30][20];
         gameObjects = new ArrayList<>();
         actors = new ArrayList<>();
+        actorsRemoved = new ArrayList<>();
         inputQueue = new ArrayList<>();
         if(i == 0)
         {
@@ -48,65 +93,17 @@ public class GameBoard {
         }
         paint = new Paint();
         factor = IMAGE_SIZE * 16.0 / 42;
-        /*
-        kye = new Kye(1, 1);
-        addGameObject(kye, 1, 1);
-        BaseObject t = new Diamond(1,2);
-        addGameObject(t, 1, 2);
-        //addGameObject(new SquareArrowBlock(29, 19, Direction.LEFT), 29, 19);
-        /*
-        for(int i = 0; i < 30; i++)
-        {
-            addGameObject(new Rotator(i, 0, Rotation.COUNTER_CLOCKWISE), i, 0);
-            addGameObject(new Rotator(i, 19, Rotation.COUNTER_CLOCKWISE), i, 19);
-        }
-        for(int i = 1; i < 19; i++)
-        {
-            addGameObject(new Rotator(0, i, Rotation.COUNTER_CLOCKWISE), 0, i);
-            addGameObject(new Rotator(29, i, Rotation.COUNTER_CLOCKWISE), 29, i);
-        }
-        for(int i = 1; i < 29; i++)
-            for(int j = 1; j < 19; j++)
-            {
-                if(i == 0 && j == 0)
-                    i++;
-                if(Math.random() < 0.1)
-                {
-                    BaseObject o = new Kye(0, 0);
-                    int rand = (int) (Math.random() * 6);
-                    switch (rand) {
-                        case 0:
-                            o = new Block(i, j);
-                            break;
-                        case 1:
-                            o = new Wall(i, j);
-                            break;
-                        case 2:
-                            int r = (int) (Math.random() * 3);
-                            if (r == 0)
-                                o = new Block(i, j);
-                            else if (r == 1)
-                                o = new BlockCircle(i, j);
-                            else
-                                o = new FuzzBlock(i, j);
-                            break;
-                        case 3:
-                            if (Math.random() > 0.5)
-                                o = new HorizontalMagnet(i, j);
-                            else
-                                o = new VerticalMagnet(i, j);
-                            break;
-                        case 4:
-                            o = new SquareArrowBlock(i, j, getRandomDirection());
-                            break;
-                        case 5:
-                            o = new Rotator(i, j, getRandomRotation());
-                    }
-                    addGameObject(o, i, j);
-                }
-            }
-            */
 
+        actualSize = (int) Math.ceil(factor * density);
+        hm = new HashMap<Integer, Bitmap>();
+
+        for(int image : images)
+            addToHashMap(image);
+    }
+
+    private void addToHashMap(int id)
+    {
+        hm.put(id, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, id), actualSize, actualSize, true));
     }
 
     public Direction getRandomDirection()
@@ -139,7 +136,8 @@ public class GameBoard {
             for(int j = 0; j < 20; j++)
                 board[i][j] = null;
 
-        actors = new ArrayList <Actor>();
+        actors = new ArrayList<Actor>();
+        actorsRemoved = new ArrayList<Actor>();
         gameObjects = new ArrayList<BaseObject>();
 
     }
@@ -174,15 +172,11 @@ public class GameBoard {
 
     public void draw(Canvas canvas, Resources resources, float density, int displayWidth, int displayHeight)
     {
-        int actualSize = (int) Math.ceil(factor * density);
         int xOffset = displayWidth / 2 - 15 * actualSize;
         for (int i = 0; i < 30; i++)
             for (int j = 0; j < 20; j++)
                 if (board[i][j] != null)
-                {
-                    Bitmap b = BitmapFactory.decodeResource(resources, board[i][j].getIcon());
-                    canvas.drawBitmap(Bitmap.createScaledBitmap(b, actualSize, actualSize, true), xOffset + actualSize * i, actualSize * j, paint);
-                }
+                    canvas.drawBitmap(hm.get(board[i][j].getIcon()), xOffset + actualSize * i, actualSize * j, paint);
     }
 
     public Kye getKye()
@@ -226,7 +220,7 @@ public class GameBoard {
         BaseObject remove = board[cordX][cordY];
         gameObjects.remove(remove);
         if(remove instanceof Actor)
-            actors.remove(remove);
+            actorsRemoved.add((Actor) o);
         board[cordX][cordY] = o;
     }
 
@@ -246,7 +240,7 @@ public class GameBoard {
         if((o2 instanceof Destroyable) && !(o instanceof Kye))
             return false;
 
-        if(o instanceof SquareArrowBlock && o2 instanceof Rotator)
+        if(o instanceof SquareSlider && o2 instanceof Rotator)
             return false;
 
         return true;
@@ -292,10 +286,12 @@ public class GameBoard {
 
     public void updateGameObjects()
     {
-        for(Actor a : actors)
-        {
-            a.act(this);
-        }
+        for (Actor a : actors)
+            if(!actorsRemoved.contains(a))
+                a.act(this);
+
+        for(Actor a : actorsRemoved)
+            actors.remove(a);
 
         levelFinished  = true;
         for(int i = 0; i < gameObjects.size(); i++) {
@@ -312,94 +308,6 @@ public class GameBoard {
             currentLevel.getNextLevel().populateBoard(this);
             currentLevel = currentLevel.getNextLevel();
         }
-
-        /*
-        currentMagnetized = new ArrayList<>(16);
-
-        levelFinished = true;
-        System.out.println("Level Finished : " + levelFinished);
-
-        for(int i = 0; i < gameObjects.size(); i++)
-        {
-            BaseObject o = gameObjects.get(i);
-            if(o instanceof Diamond)
-            {
-                levelFinished = false;
-                System.out.println("Level Finished : " + levelFinished);
-            }
-            if(o instanceof HorizontalMagnet)
-            {
-                BaseObject left = null, right = null;
-                int x = o.getCordX(), y = o.getCordY();
-                if(inBounds(x - 2, y))
-                    left = board[x - 2][y];
-                if(inBounds(x + 2, y))
-                    right = board[x + 2][y];
-
-                if(left != null && left instanceof Moveable && !(left instanceof HorizontalMagnet) && !currentMagnetized.contains(left))
-                {
-                    moveGameObject(left, x - 1, y);
-                    currentMagnetized.add(left);
-                }
-
-                if(right != null && right instanceof Moveable && !(right instanceof HorizontalMagnet) && !currentMagnetized.contains(right))
-                {
-                    moveGameObject(right, x + 1, y);
-                    currentMagnetized.add(right);
-                }
-            }
-
-            if(o instanceof VerticalMagnet)
-            {
-                BaseObject up = null, down = null;
-                int x = o.getCordX(), y = o.getCordY();
-                if(inBounds(x, y - 2))
-                    up = board[x][y - 2];
-                if(inBounds(x , y + 2))
-                    down = board[x][y + 2];
-
-                if(up != null && up instanceof Moveable && !(up instanceof VerticalMagnet) && !currentMagnetized.contains(up))
-                {
-                    moveGameObject(up, x, y - 1);
-                    currentMagnetized.add(up);
-                }
-
-                if(down != null && down instanceof Moveable && !(down instanceof VerticalMagnet) && !currentMagnetized.contains(down))
-                {
-                    moveGameObject(down, x, y + 1);
-                    currentMagnetized.add(down);
-                }
-            }
-
-            if(o instanceof SquareArrowBlock)
-            {
-                int dx = 0, dy = 0;
-                switch(((SquareArrowBlock)o).getDirection())
-                {
-                    case UP:
-                        dy = -1;
-                        break;
-                    case RIGHT:
-                        dx = 1;
-                        break;
-                    case DOWN:
-                        dy = 1;
-                        break;
-                    default:
-                        dx = -1;
-                }
-                int x = o.getCordX() + dx, y = o.getCordY() + dy;
-                if(!moveGameObject(o, x, y))
-                {
-                    if(inBounds(x, y) && board[x][y] instanceof Rotator)
-                    {
-                        Rotator r = (Rotator) board[x][y];
-                        ((SquareArrowBlock)o).rotate(r.getRotation());
-                    }
-                }
-            }
-        }
-        */
     }
 }
 
