@@ -1,4 +1,4 @@
-package edu.uco.jdrumm.projectkye;
+package edu.uco.jdrumm.projectkye.Game;
 
 /**
  * Created by josh on 11/2/17.

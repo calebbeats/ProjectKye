@@ -1,4 +1,7 @@
-package edu.uco.jdrumm.projectkye;
+package edu.uco.jdrumm.projectkye.Game;
+
+import edu.uco.jdrumm.projectkye.R;
+import edu.uco.jdrumm.projectkye.Orientation.Rotation;
 
 /**
  * Created by josh on 10/27/17.

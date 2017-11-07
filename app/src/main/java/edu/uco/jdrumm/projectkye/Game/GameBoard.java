@@ -1,4 +1,4 @@
-package edu.uco.jdrumm.projectkye;
+package edu.uco.jdrumm.projectkye.Game;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -7,6 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
+
+import edu.uco.jdrumm.projectkye.Orientation.Direction;
+import edu.uco.jdrumm.projectkye.Orientation.Rotation;
+import edu.uco.jdrumm.projectkye.Level.Level;
+import edu.uco.jdrumm.projectkye.Level.Level1;
 
 /**
  * Created by caleb on 10/23/2017.
@@ -213,7 +218,7 @@ public class GameBoard {
         BaseObject remove = board[cordX][cordY];
         gameObjects.remove(remove);
         if(remove instanceof Actor)
-            actors.remove((Actor) remove);
+            actors.remove(remove);
         board[cordX][cordY] = o;
     }
 
@@ -230,7 +235,7 @@ public class GameBoard {
         else
             s2 = "NULL";
 
-        if((o2 instanceof edu.uco.jdrumm.projectkye.Destroyable) && !(o instanceof Kye))
+        if((o2 instanceof Destroyable) && !(o instanceof Kye))
             return false;
 
         if(o instanceof SquareArrowBlock && o2 instanceof Rotator)

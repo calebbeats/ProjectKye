@@ -14,6 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import edu.uco.jdrumm.projectkye.Orientation.Direction;
+import edu.uco.jdrumm.projectkye.Game.GameBoard;
+import edu.uco.jdrumm.projectkye.Level.Level1;
+
 public class GameActivity extends AppCompatActivity
 {
 

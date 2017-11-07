@@ -1,4 +1,8 @@
-package edu.uco.jdrumm.projectkye;
+package edu.uco.jdrumm.projectkye.Game;
+
+import edu.uco.jdrumm.projectkye.Orientation.Direction;
+import edu.uco.jdrumm.projectkye.R;
+import edu.uco.jdrumm.projectkye.Orientation.Rotation;
 
 public class SquareArrowBlock extends Actor implements Moveable
 {
