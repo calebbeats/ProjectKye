@@ -172,19 +172,27 @@ public class GameBoard {
         nextLevel = l;
     }
 
-    public void draw(Canvas canvas, Resources resources, float density) {
+    public void draw(Canvas canvas, Resources resources, float density, int displayWidth, int displayHeight)
+    {
+        int actualSize = (int) Math.ceil(factor * density);
+        int xOffset = displayWidth / 2 - 15 * actualSize;
         for (int i = 0; i < 30; i++)
             for (int j = 0; j < 20; j++)
                 if (board[i][j] != null)
                 {
                     Bitmap b = BitmapFactory.decodeResource(resources, board[i][j].getIcon());
-                    canvas.drawBitmap(Bitmap.createScaledBitmap(b, (int) Math.ceil(factor * density), (int) Math.ceil(factor * density), true), ((int) Math.ceil(factor * density)) * i, ((int) Math.ceil(factor * density)) * j, paint);
+                    canvas.drawBitmap(Bitmap.createScaledBitmap(b, actualSize, actualSize, true), xOffset + actualSize * i, actualSize * j, paint);
                 }
     }
 
     public Kye getKye()
     {
         return kye;
+    }
+
+    public boolean pushGameObject(BaseObject o, int cordX, int cordY)
+    {
+        return moveGameObject(o, cordX, cordY, 1);
     }
 
     public boolean moveGameObject(BaseObject o, int cordX, int cordY)

@@ -1,5 +1,6 @@
 package edu.uco.jdrumm.projectkye.Level;
 
+import edu.uco.jdrumm.projectkye.Game.Sentry;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 import edu.uco.jdrumm.projectkye.Orientation.Rotation;
 import edu.uco.jdrumm.projectkye.Game.BaseObject;
@@ -157,13 +158,15 @@ public class Level1  extends Level{
                 new SquareArrowBlock(22, 1, Direction.DOWN),
                 new Block(21, 13),
                 new Block(21, 12),
+                new Sentry(21, 11, Direction.UP),
                 new Block(21, 10),
                 new Block(20, 13),
+                new Sentry(19, 13, Direction.LEFT),
                 new Block(18, 13),
                 new VerticalMagnet(12, 8),
                 new HorizontalMagnet(15, 8),
-                new VerticalMagnet(12, 11),
-                new HorizontalMagnet(15, 11)
+                new VerticalMagnet(15, 11),
+                new HorizontalMagnet(12, 11)
         };
 
     }

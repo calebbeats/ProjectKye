@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
             android:text="left" />
 
     </LinearLayout>
+    -->
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/draw_frame"
@@ -31,6 +33,7 @@
         android:layout_height="wrap_content" >
     </RelativeLayout>
 
+    <!--
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,5 +52,6 @@
             android:text="down" />
 
     </LinearLayout>
+    -->
 
 </LinearLayout>

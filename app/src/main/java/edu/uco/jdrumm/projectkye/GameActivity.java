@@ -35,6 +35,7 @@ public class GameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        /*
         lbutton = (Button) findViewById(R.id.lbutton);
         lbutton.setOnTouchListener(new View.OnTouchListener()
         {
@@ -90,6 +91,7 @@ public class GameActivity extends AppCompatActivity
                 return true;
             }
         });
+        */
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.draw_frame);
         myCanvas = new myCanvas(getApplicationContext());
@@ -107,6 +109,7 @@ public class GameActivity extends AppCompatActivity
         private DisplayMetrics display;
         private SurfaceHolder surfaceHolder;
         private Thread drawingThread, inputThread;
+        private int displayWidth, displayHeight;
         private float density;
         private final int FRAMES_PER_SECOND = 10;
 
@@ -117,10 +120,43 @@ public class GameActivity extends AppCompatActivity
             display = new DisplayMetrics();
             GameActivity.this.getWindowManager().getDefaultDisplay().getMetrics(display);
 
+            displayWidth = display.widthPixels;
+            displayHeight = display.heightPixels;
+
             surfaceHolder = getHolder();
             surfaceHolder.addCallback(new SurfaceHolderListener());
 
             density = getResources().getDisplayMetrics().density;
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent e)
+        {
+            int xpos = (int) e.getX();
+            int ypos = (int) e.getY();
+
+            switch(e.getAction())
+            {
+                case MotionEvent.ACTION_DOWN:
+                    if(ypos < displayHeight / 3)
+                        up = true;
+                    else if (ypos > displayHeight * 2 / 3)
+                        down = true;
+                    else
+                    {
+                        //Middle third of the screen
+                        if(xpos < displayWidth / 3)
+                            left = true;
+                        else if(xpos > displayWidth * 2 / 3)
+                            right = true;
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    up = left = down = right = false;
+                    break;
+            }
+            System.out.println("(" + xpos + ", " + ypos + ")");
+            return true;
         }
     }
 
@@ -151,7 +187,7 @@ public class GameActivity extends AppCompatActivity
                                     Thread.sleep(1000 / myCanvas.FRAMES_PER_SECOND - timePassed);
                                 else
                                     Thread.sleep(5);
-                                System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
+                                //System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -161,7 +197,7 @@ public class GameActivity extends AppCompatActivity
                             canvas.drawColor(Color.WHITE);
                             Paint p = new Paint();
                             p.setColor(Color.RED);
-                            gameBoard.draw(canvas, getResources(), myCanvas.density);
+                            gameBoard.draw(canvas, getResources(), myCanvas.density, myCanvas.displayWidth, myCanvas.displayHeight);
                             myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
                         }
                     }
