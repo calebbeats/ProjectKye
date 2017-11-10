@@ -134,6 +134,6 @@ public abstract class ActorRotatable extends Actor
         if(o instanceof VerticalMagnet)
             return;
         stopped = false;
-        action(board); //Might remove this. This makes it so the piece can take its action right after becoming unstuck
+        //action(board); //Might remove this. This makes it so the piece can take its action right after becoming unstuck
     }
 }
