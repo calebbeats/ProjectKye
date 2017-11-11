@@ -1,5 +1,6 @@
 package edu.uco.jdrumm.projectkye.Level;
 
+import edu.uco.jdrumm.projectkye.Game.Monster;
 import edu.uco.jdrumm.projectkye.Game.RoundSlider;
 import edu.uco.jdrumm.projectkye.Game.Sentry;
 import edu.uco.jdrumm.projectkye.Game.SquareSlider;
@@ -15,10 +16,6 @@ import edu.uco.jdrumm.projectkye.Game.Kye;
 import edu.uco.jdrumm.projectkye.Game.Rotator;
 import edu.uco.jdrumm.projectkye.Game.VerticalMagnet;
 import edu.uco.jdrumm.projectkye.Game.Wall;
-
-/**
- * Created by caleb on 11/5/2017.
- */
 
 public class Level1  extends Level{
 
@@ -199,7 +196,12 @@ public class Level1  extends Level{
                 new VerticalMagnet(12, 8),
                 new HorizontalMagnet(15, 8),
                 new VerticalMagnet(15, 11),
-                new HorizontalMagnet(12, 11)
+                new HorizontalMagnet(12, 11),
+                new Monster(1, 1, Monster.Monsters.TWISTER),
+                new Monster(28, 1, Monster.Monsters.GNASHER),
+                new Monster(1, 18, Monster.Monsters.BLOB),
+                new Monster(28, 18, Monster.Monsters.SNAKE),
+                new Monster(18, 18, Monster.Monsters.SPIKE)
         };
 
     }

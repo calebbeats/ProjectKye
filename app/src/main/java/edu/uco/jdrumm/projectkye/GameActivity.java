@@ -155,7 +155,7 @@ public class GameActivity extends AppCompatActivity
                     up = left = down = right = false;
                     break;
             }
-            System.out.println("(" + xpos + ", " + ypos + ")");
+            //System.out.println("(" + xpos + ", " + ypos + ")");
             return true;
         }
     }
@@ -171,8 +171,7 @@ public class GameActivity extends AppCompatActivity
                 @Override
                 public void run()
                 {
-                    long startTime = System.currentTimeMillis();
-                    long cumTime = startTime;
+                    long cumTime = System.currentTimeMillis();
                     Canvas canvas;
 
                     while(!Thread.currentThread().isInterrupted())
@@ -187,7 +186,7 @@ public class GameActivity extends AppCompatActivity
                                     Thread.sleep(1000 / myCanvas.FRAMES_PER_SECOND - timePassed);
                                 else
                                     Thread.sleep(5);
-                                System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
+                                //System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,19 +16,15 @@ import edu.uco.jdrumm.projectkye.Level.Level;
 import edu.uco.jdrumm.projectkye.Level.Level1;
 import edu.uco.jdrumm.projectkye.R;
 
-/**
- * Created by caleb on 10/23/2017.
- */
-
 public class GameBoard {
 
     public BaseObject[][] board;
-    public Level currentLevel;
-    public Level nextLevel;
-    public ArrayList<Direction> inputQueue;
+    private Level currentLevel;
+    private Level nextLevel;
+    private ArrayList<Direction> inputQueue;
     private Paint paint;
 
-    public boolean levelFinished;
+    private boolean levelFinished;
 
 
     private Kye kye;
@@ -40,7 +37,7 @@ public class GameBoard {
     private int actualSize;
     private Resources resources;
 
-    HashMap<Integer, Bitmap> hm;
+    private SparseArray<Bitmap> hm;
 
     private final int[] images =
             {
@@ -48,10 +45,10 @@ public class GameBoard {
                     R.drawable.block2,
                     R.drawable.block3,
                     R.drawable.diamond,
+                    R.drawable.diamond2,
                     R.drawable.kye,
                     R.drawable.magnethorizontal,
                     R.drawable.magnetvertical,
-                    R.drawable.monster1,
                     R.drawable.rotatorclockwise,
                     R.drawable.rotatorcounterclockwise,
                     R.drawable.roundslideru,
@@ -74,7 +71,20 @@ public class GameBoard {
                     R.drawable.wall6,
                     R.drawable.wall7,
                     R.drawable.wall8,
-                    R.drawable.wall9
+                    R.drawable.wall9,
+                    R.drawable.spike1,
+                    R.drawable.spike2,
+                    R.drawable.gnasher1,
+                    R.drawable.gnasher2,
+                    R.drawable.gnasher3,
+                    R.drawable.snake1,
+                    R.drawable.snake2,
+                    R.drawable.twister1,
+                    R.drawable.twister2,
+                    R.drawable.blob1,
+                    R.drawable.blob2,
+                    R.drawable.blob3,
+                    R.drawable.blob4
             };
 
     public GameBoard(int i, Resources resources, float density)
@@ -95,7 +105,7 @@ public class GameBoard {
         factor = IMAGE_SIZE * 16.0 / 42;
 
         actualSize = (int) Math.ceil(factor * density);
-        hm = new HashMap<Integer, Bitmap>();
+        hm = new SparseArray<>();
 
         for(int image : images)
             addToHashMap(image);
@@ -130,15 +140,15 @@ public class GameBoard {
         return Rotation.COUNTER_CLOCKWISE;
     }
 
-    public void clearBoard()
+    private void clearBoard()
     {
         for(int i = 0; i < 30; i++)
             for(int j = 0; j < 20; j++)
                 board[i][j] = null;
 
-        actors = new ArrayList<Actor>();
-        actorsRemoved = new ArrayList<Actor>();
-        gameObjects = new ArrayList<BaseObject>();
+        actors = new ArrayList<>();
+        actorsRemoved = new ArrayList<>();
+        gameObjects = new ArrayList<>();
 
     }
 
@@ -151,7 +161,11 @@ public class GameBoard {
         {
             gameObjects.add(obj);
             if(obj instanceof Actor)
+            {
                 actors.add((Actor) obj);
+                if(obj instanceof Kye)
+                    kye = (Kye) obj;
+            }
         }
     }
 
@@ -179,17 +193,17 @@ public class GameBoard {
                     canvas.drawBitmap(hm.get(board[i][j].getIcon()), xOffset + actualSize * i, actualSize * j, paint);
     }
 
-    public Kye getKye()
+    Kye getKye()
     {
         return kye;
     }
 
-    public boolean pushGameObject(BaseObject o, int cordX, int cordY)
+    boolean pushGameObject(BaseObject o, int cordX, int cordY)
     {
         return moveGameObject(o, cordX, cordY, 1);
     }
 
-    public boolean moveGameObject(BaseObject o, int cordX, int cordY)
+    boolean moveGameObject(BaseObject o, int cordX, int cordY)
     {
         return moveGameObject(o, cordX, cordY, 0);
     }
@@ -215,35 +229,18 @@ public class GameBoard {
         return true;
     }
 
-    private void replaceGameObject(BaseObject o, int cordX, int cordY)
+    void replaceGameObject(BaseObject o, int cordX, int cordY)
     {
         BaseObject remove = board[cordX][cordY];
         gameObjects.remove(remove);
         if(remove instanceof Actor)
-            actorsRemoved.add((Actor) o);
+            actorsRemoved.add((Actor) remove);
         board[cordX][cordY] = o;
     }
 
     private boolean validMove(BaseObject o, BaseObject o2)
     {
-        String s1, s2;
-        if(o != null)
-            s1 = o.getClass().toString();
-        else
-            s1 = "NULL";
-
-        if(o2 != null)
-            s2 = o2.getClass().toString();
-        else
-            s2 = "NULL";
-
-        if((o2 instanceof Destroyable) && !(o instanceof Kye))
-            return false;
-
-        if(o instanceof SquareSlider && o2 instanceof Rotator)
-            return false;
-
-        return true;
+        return !(o2 instanceof Destroyable && !(o instanceof Kye) || (o instanceof SquareSlider && o2 instanceof Rotator));
     }
 
     public void pushToInputQueue(Direction d)
@@ -251,7 +248,7 @@ public class GameBoard {
         inputQueue.add(d);
     }
 
-    public Direction popFromInputQueue()
+    Direction popFromInputQueue()
     {
         if(inputQueue.size() > 0)
         {
@@ -262,7 +259,7 @@ public class GameBoard {
         return null;
     }
 
-    public boolean inBounds(int cordX, int cordY)
+    private boolean inBounds(int cordX, int cordY)
     {
         return cordX >= 0 && cordX <= 29 && cordY >= 0 && cordY <= 19;
     }
@@ -277,7 +274,7 @@ public class GameBoard {
         return board[cordX][cordY] == null;
     }
 
-    public BaseObject getAt(int x, int y)
+    BaseObject getAt(int x, int y)
     {
         if(inBounds(x, y))
             return board[x][y];

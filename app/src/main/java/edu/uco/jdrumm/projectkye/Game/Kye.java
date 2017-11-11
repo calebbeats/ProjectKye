@@ -3,15 +3,15 @@ package edu.uco.jdrumm.projectkye.Game;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 import edu.uco.jdrumm.projectkye.R;
 
-/**
- * Created by caleb on 10/23/2017.
- */
-
 public class Kye extends Actor
 {
+    private int startX, startY;
+
     public Kye(int x, int y)
     {
         super(x,y);
+        startX = x;
+        startY = y;
         icon = R.drawable.kye;
     }
 
@@ -38,5 +38,12 @@ public class Kye extends Actor
         }
 
         board.moveGameObject(this, getCordX() + dx, getCordY() + dy);
+    }
+
+    void kill(GameBoard board)
+    {
+        board.replaceGameObject(this, startX, startY);
+        x = startX;
+        y = startY;
     }
 }
