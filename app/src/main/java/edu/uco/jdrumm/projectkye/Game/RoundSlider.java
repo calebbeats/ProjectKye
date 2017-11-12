@@ -95,6 +95,7 @@ public class RoundSlider extends ActorRotatable implements Moveable, Round
                                     rright = true;
                                 break;
                             default:
+                                rleft = rright = false;
                         }
                     }
                     int olx, oly;

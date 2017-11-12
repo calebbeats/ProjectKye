@@ -2,10 +2,6 @@ package edu.uco.jdrumm.projectkye.Game;
 
 import edu.uco.jdrumm.projectkye.R;
 
-/**
- * Created by caleb on 10/23/2017.
- */
-
 public class VerticalMagnet extends Actor implements Moveable, Magnet
 {
 
@@ -31,8 +27,8 @@ public class VerticalMagnet extends Actor implements Moveable, Magnet
         else if(o != null && o instanceof Moveable && !(o instanceof VerticalMagnet))
         {
             board.moveGameObject(o, x, y - 1);
-            if(o instanceof SquareSlider)
-                ((SquareSlider) o).stop();
+            if(o instanceof ActorRotatable)
+                ((ActorRotatable) o).stop();
         }
 
         if(o2 instanceof Kye && od == null)
@@ -42,8 +38,8 @@ public class VerticalMagnet extends Actor implements Moveable, Magnet
         else if(o2 != null && o2 instanceof Moveable && !(o2 instanceof VerticalMagnet))
         {
             board.moveGameObject(o2, x, y + 1);
-            if(o2 instanceof SquareSlider)
-                ((SquareSlider) o2).stop();
+            if(o2 instanceof ActorRotatable)
+                ((ActorRotatable) o2).stop();
         }
     }
 }
