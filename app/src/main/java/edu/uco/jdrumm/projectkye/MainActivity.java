@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import edu.uco.jdrumm.projectkye.Orientation.LevelSelectActivity;
+
 public class MainActivity extends AppCompatActivity
 {
 
@@ -27,6 +29,14 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 Intent i = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(i);
+            }
+        });
+
+        levels.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, LevelSelectActivity.class);
                 startActivity(i);
             }
         });

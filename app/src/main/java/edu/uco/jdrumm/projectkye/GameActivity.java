@@ -4,19 +4,21 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import edu.uco.jdrumm.projectkye.Orientation.Direction;
 import edu.uco.jdrumm.projectkye.Game.GameBoard;
 import edu.uco.jdrumm.projectkye.Level.Level1;
+import edu.uco.jdrumm.projectkye.Level.Level2;
+import edu.uco.jdrumm.projectkye.Level.Level3;
+import edu.uco.jdrumm.projectkye.Orientation.Direction;
 
 public class GameActivity extends AppCompatActivity
 {
@@ -26,8 +28,9 @@ public class GameActivity extends AppCompatActivity
 
     //Inputs. True if currently pressed, false otherwise
     private boolean left, right, up, down;
-
+    private int level;
     private GameBoard gameBoard;
+    MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,6 +38,12 @@ public class GameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        Bundle extras = getIntent().getExtras();
+
+        if(extras != null)
+        {
+            level = extras.getInt("level");
+        }
         /*
         lbutton = (Button) findViewById(R.id.lbutton);
         lbutton.setOnTouchListener(new View.OnTouchListener()
@@ -96,7 +105,18 @@ public class GameActivity extends AppCompatActivity
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.draw_frame);
         myCanvas = new myCanvas(getApplicationContext());
 
+        player = MediaPlayer.create(this, R.raw.game_music);
+        player.setLooping(true);
+        player.setVolume(70,70);
+        player.start();
+
         relativeLayout.addView(myCanvas);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.stop();
     }
 
     private class myCanvas extends SurfaceView
@@ -123,10 +143,25 @@ public class GameActivity extends AppCompatActivity
 
             density = getResources().getDisplayMetrics().density;
 
+
+
             //Initialize Game Objects
             gameBoard = new GameBoard(0, getResources(), density);
-            Level1 lvl1 = new Level1();
-            lvl1.populateBoard(gameBoard);
+            if(level == 1)
+            {
+                Level1 lvl1 = new Level1();
+                lvl1.populateBoard(gameBoard);
+            }
+            if(level == 2)
+            {
+                Level2 lvl2 = new Level2();
+                lvl2.populateBoard(gameBoard);
+            }
+            if(level == 3)
+            {
+                Level3 lvl3 = new Level3();
+                lvl3.populateBoard(gameBoard);
+            }
         }
 
         @Override
