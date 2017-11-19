@@ -8,12 +8,11 @@ import android.graphics.Paint;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import edu.uco.jdrumm.projectkye.Orientation.Direction;
-import edu.uco.jdrumm.projectkye.Orientation.Rotation;
 import edu.uco.jdrumm.projectkye.Level.Level;
 import edu.uco.jdrumm.projectkye.Level.Level1;
+import edu.uco.jdrumm.projectkye.Orientation.Direction;
+import edu.uco.jdrumm.projectkye.Orientation.Rotation;
 import edu.uco.jdrumm.projectkye.R;
 
 public class GameBoard {
@@ -84,7 +83,9 @@ public class GameBoard {
                     R.drawable.blob1,
                     R.drawable.blob2,
                     R.drawable.blob3,
-                    R.drawable.blob4
+                    R.drawable.blob4,
+                    R.drawable.teleporter1,
+                    R.drawable.teleporter2
             };
 
     public GameBoard(int i, Resources resources, float density)

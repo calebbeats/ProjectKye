@@ -8,6 +8,8 @@ import edu.uco.jdrumm.projectkye.Game.Kye;
 import edu.uco.jdrumm.projectkye.Game.RoundSlider;
 import edu.uco.jdrumm.projectkye.Game.Sentry;
 import edu.uco.jdrumm.projectkye.Game.SquareSlider;
+import edu.uco.jdrumm.projectkye.Game.TeleporterA;
+import edu.uco.jdrumm.projectkye.Game.TeleporterB;
 import edu.uco.jdrumm.projectkye.Game.Wall;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 
@@ -44,11 +46,12 @@ public class Level3 extends Level {
                 // (17,1)
                 // (18,1)
                 new FuzzBlock(19,1),
-                // (20,1)
+
+                new TeleporterA(16,1,new TeleporterB(24,1)),
                 new Kye(21,1),
                 // (22,1)
                 new Wall(23,1),
-                // (24,1)
+                new TeleporterB(24,1),
                 new Block(25,1),
                 // (26,1)
                 // (27,1)
