@@ -42,7 +42,7 @@ public class Kye extends Actor
 
     void kill(GameBoard board)
     {
-        board.replaceGameObject(this, startX, startY);
+        board.respawnKye(startX, startY);
         x = startX;
         y = startY;
     }

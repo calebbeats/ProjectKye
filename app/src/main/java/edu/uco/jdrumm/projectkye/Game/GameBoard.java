@@ -238,6 +238,14 @@ public class GameBoard {
         board[cordX][cordY] = o;
     }
 
+    void respawnKye(int x, int y)
+    {
+        board[kye.getCordX()][kye.getCordY()] = null;
+        kye.setCordX(x);
+        kye.setCordY(y);
+        board[x][y] = kye;
+    }
+
     private boolean validMove(BaseObject o, BaseObject o2)
     {
         return !(o2 instanceof Destroyable && !(o instanceof Kye) || (o instanceof SquareSlider && o2 instanceof Rotator));
