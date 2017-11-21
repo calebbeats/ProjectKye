@@ -16,6 +16,8 @@ public class Level2 extends Level {
     {
         super();
         setNextLevel(new Level3());
+        levelMessage = "OK, that's got the easy one out of the way";
+        levelName = "Second";
     }
 
 

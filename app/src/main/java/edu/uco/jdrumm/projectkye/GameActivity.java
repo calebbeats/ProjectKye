@@ -1,6 +1,8 @@
 package edu.uco.jdrumm.projectkye;
 
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,12 +17,14 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import edu.uco.jdrumm.projectkye.Game.GameBoard;
+import edu.uco.jdrumm.projectkye.Level.Level;
 import edu.uco.jdrumm.projectkye.Level.Level1;
 import edu.uco.jdrumm.projectkye.Level.Level2;
 import edu.uco.jdrumm.projectkye.Level.Level3;
+import edu.uco.jdrumm.projectkye.Level.Level4;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 
-public class GameActivity extends AppCompatActivity
+public class GameActivity extends AppCompatActivity implements PopupDialogFragment.OnFragmentInteractionListener
 {
 
     private myCanvas myCanvas;
@@ -119,7 +123,7 @@ public class GameActivity extends AppCompatActivity
         player.stop();
     }
 
-    private class myCanvas extends SurfaceView
+    public class myCanvas extends SurfaceView
     {
         private DisplayMetrics display;
         private SurfaceHolder surfaceHolder;
@@ -146,22 +150,26 @@ public class GameActivity extends AppCompatActivity
 
 
             //Initialize Game Objects
-            gameBoard = new GameBoard(0, getResources(), density);
-            if(level == 1)
+            gameBoard = new GameBoard(0, getResources(), this, density);
+            Level l;
+            switch(level)
             {
-                Level1 lvl1 = new Level1();
-                lvl1.populateBoard(gameBoard);
+                case 1:
+                    l = new Level1();
+                    break;
+                case 2:
+                    l = new Level2();
+                    break;
+                case 3:
+                    l = new Level3();
+                    break;
+                case 4:
+                    l = new Level4();
+                    break;
+                default:
+                    l = new Level1();
             }
-            if(level == 2)
-            {
-                Level2 lvl2 = new Level2();
-                lvl2.populateBoard(gameBoard);
-            }
-            if(level == 3)
-            {
-                Level3 lvl3 = new Level3();
-                lvl3.populateBoard(gameBoard);
-            }
+            l.populateBoard(gameBoard);
         }
 
         @Override
@@ -193,6 +201,25 @@ public class GameActivity extends AppCompatActivity
             //System.out.println("(" + xpos + ", " + ypos + ")");
             return true;
         }
+
+        public void displayLevelEnd(String message, String name)
+        {
+            drawingThread.interrupt();
+            FragmentManager fm = getFragmentManager();
+            PopupDialogFragment frag = PopupDialogFragment.newInstance();
+            Bundle args = new Bundle();
+            args.putString("Message", message);
+            args.putString("Name", name);
+            frag.setArguments(args);
+            frag.show(fm, "frag1");
+        }
+
+        public void startNextLevel()
+        {
+            gameBoard.loadNextLevel();
+            drawingThread.start();
+        }
+
     }
 
     private class SurfaceHolderListener implements SurfaceHolder.Callback
@@ -287,6 +314,20 @@ public class GameActivity extends AppCompatActivity
 
             if (myCanvas.inputThread != null)
                 myCanvas.inputThread.interrupt();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(PopupDialogFragment.ButtonPress b)
+    {
+        if(b == PopupDialogFragment.ButtonPress.NEXT)
+        {
+            myCanvas.startNextLevel();
+        }
+        else
+        {
+            Intent i = new Intent(GameActivity.this, LevelSelectActivity.class);
+            startActivity(i);
         }
     }
 }

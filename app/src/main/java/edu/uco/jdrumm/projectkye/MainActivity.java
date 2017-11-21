@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import edu.uco.jdrumm.projectkye.Orientation.LevelSelectActivity;
-
 public class MainActivity extends AppCompatActivity
 {
 

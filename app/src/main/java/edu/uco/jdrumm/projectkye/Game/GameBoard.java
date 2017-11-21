@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.SparseArray;
+import android.view.SurfaceView;
 
 import java.util.ArrayList;
 
+import edu.uco.jdrumm.projectkye.GameActivity;
 import edu.uco.jdrumm.projectkye.Level.Level;
 import edu.uco.jdrumm.projectkye.Level.Level1;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
@@ -35,6 +37,7 @@ public class GameBoard {
 
     private int actualSize;
     private Resources resources;
+    private GameActivity.myCanvas surface;
 
     private SparseArray<Bitmap> hm;
 
@@ -43,7 +46,7 @@ public class GameBoard {
                     R.drawable.block,
                     R.drawable.block2,
                     R.drawable.block3,
-                    R.drawable.diamond,
+                    R.drawable.diamond1,
                     R.drawable.diamond2,
                     R.drawable.kye,
                     R.drawable.magnethorizontal,
@@ -88,9 +91,10 @@ public class GameBoard {
                     R.drawable.teleporter2
             };
 
-    public GameBoard(int i, Resources resources, float density)
+    public GameBoard(int i, Resources resources, GameActivity.myCanvas surface, float density)
     {
         this.resources = resources;
+        this.surface = surface;
 
         levelFinished = false;
         board = new BaseObject[30][20];
@@ -114,7 +118,9 @@ public class GameBoard {
 
     private void addToHashMap(int id)
     {
-        hm.put(id, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, id), actualSize, actualSize, true));
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        hm.put(id, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, id, options), actualSize, actualSize, true));
     }
 
     public Direction getRandomDirection()
@@ -309,11 +315,14 @@ public class GameBoard {
         }
 
         if(levelFinished)
-        {
-            this.clearBoard();
-            currentLevel.getNextLevel().populateBoard(this);
-            currentLevel = currentLevel.getNextLevel();
-        }
+            surface.displayLevelEnd(currentLevel.getLevelMessage(), currentLevel.getNextLevel().getLevelName());
+    }
+
+    public void loadNextLevel()
+    {
+        this.clearBoard();
+        currentLevel.getNextLevel().populateBoard(this);
+        currentLevel = currentLevel.getNextLevel();
     }
 }
 

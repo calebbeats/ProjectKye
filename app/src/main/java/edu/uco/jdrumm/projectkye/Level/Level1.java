@@ -22,8 +22,9 @@ public class Level1  extends Level{
     public Level1()
     {
         super();
-
         setNextLevel(new Level2());
+        levelMessage = "The first level was for practice";
+        levelName = "First";
     }
 
     @Override

@@ -8,18 +8,16 @@ import edu.uco.jdrumm.projectkye.Game.Kye;
 import edu.uco.jdrumm.projectkye.Game.RoundSlider;
 import edu.uco.jdrumm.projectkye.Game.Sentry;
 import edu.uco.jdrumm.projectkye.Game.SquareSlider;
-import edu.uco.jdrumm.projectkye.Game.TeleporterA;
-import edu.uco.jdrumm.projectkye.Game.TeleporterB;
 import edu.uco.jdrumm.projectkye.Game.Wall;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 
-/**
- * Created by caleb on 11/5/2017.
- */
-
-public class Level3 extends Level {
-    public Level3() {
+public class Level3 extends Level
+{
+    public Level3()
+    {
         super();
+        levelMessage = "Well done, that one was a bit harder";
+        levelName = "Slider";
     }
 
     @Override
@@ -47,11 +45,9 @@ public class Level3 extends Level {
                 // (18,1)
                 new FuzzBlock(19,1),
 
-                new TeleporterA(16,1,new TeleporterB(24,1)),
                 new Kye(21,1),
                 // (22,1)
                 new Wall(23,1),
-                new TeleporterB(24,1),
                 new Block(25,1),
                 // (26,1)
                 // (27,1)

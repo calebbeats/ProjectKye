@@ -1,60 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.uco.jdrumm.projectkye.Orientation.LevelSelectActivity">
+    tools:context="edu.uco.jdrumm.projectkye.LevelSelectActivity">
 
-    <Button
-        android:id="@+id/btnLevel3"
-        android:layout_width="173dp"
-        android:layout_height="65dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:text="Level 3"
-        app:layout_constraintLeft_toRightOf="@+id/btnLevel2"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
-
-    <Button
-        android:id="@+id/btnLevel2"
-        android:layout_width="173dp"
-        android:layout_height="65dp"
-        android:text="Level 2"
-        app:layout_constraintBottom_toBottomOf="@+id/btnLevel3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnLevel3"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
-
-    <Button
-        android:id="@+id/btnLevel1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Level 1"
-        app:layout_constraintRight_toLeftOf="@+id/btnLevel2"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnLevel2"
-        android:layout_marginEnd="21dp"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnLevel2"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="21dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.0" />
-
-</android.support.constraint.ConstraintLayout>
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+</RelativeLayout>

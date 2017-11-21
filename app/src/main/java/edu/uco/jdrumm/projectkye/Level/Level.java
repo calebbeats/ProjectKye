@@ -1,27 +1,20 @@
 package edu.uco.jdrumm.projectkye.Level;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 import edu.uco.jdrumm.projectkye.Game.GameBoard;
 import edu.uco.jdrumm.projectkye.Game.BaseObject;
-import edu.uco.jdrumm.projectkye.Game.RoundSlider;
 import edu.uco.jdrumm.projectkye.Game.Wall;
-import edu.uco.jdrumm.projectkye.Game.Magnet;
-
-/**
- * Created by caleb on 10/23/2017.
- */
 
 public abstract class Level {
 
 
     private Level nextLevel;
     protected BaseObject[] objects;
+    protected String levelMessage, levelName;
 
     public Level()
     {
-
+        levelMessage = "Please change this to a unique level message";
+        levelName = "WE THREW OUT HIS NAME!!!!";
     }
 
     public void populateBoard(GameBoard b)
@@ -61,6 +54,16 @@ public abstract class Level {
     public void setNextLevel(Level l)
     {
         nextLevel = l;
+    }
+
+    public String getLevelMessage()
+    {
+        return levelMessage;
+    }
+
+    public String getLevelName()
+    {
+        return levelName;
     }
 }
 
