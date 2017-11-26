@@ -22,6 +22,9 @@ import edu.uco.jdrumm.projectkye.Level.Level1;
 import edu.uco.jdrumm.projectkye.Level.Level2;
 import edu.uco.jdrumm.projectkye.Level.Level3;
 import edu.uco.jdrumm.projectkye.Level.Level4;
+import edu.uco.jdrumm.projectkye.Level.Level5;
+import edu.uco.jdrumm.projectkye.Level.Level6;
+import edu.uco.jdrumm.projectkye.Level.Level7;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 
 public class GameActivity extends AppCompatActivity implements PopupDialogFragment.OnFragmentInteractionListener
@@ -165,6 +168,15 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
                     break;
                 case 4:
                     l = new Level4();
+                    break;
+                case 5:
+                    l = new Level5();
+                    break;
+                case 6:
+                    l = new Level6();
+                    break;
+                case 7:
+                    l = new Level7();
                     break;
                 default:
                     l = new Level1();

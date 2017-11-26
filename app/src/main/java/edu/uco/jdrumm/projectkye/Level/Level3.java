@@ -16,6 +16,7 @@ public class Level3 extends Level
     public Level3()
     {
         super();
+        setNextLevel(new Level4());
         levelMessage = "Well done, that one was a bit harder";
         levelName = "Slider";
     }

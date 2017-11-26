@@ -1,9 +1,6 @@
 package edu.uco.jdrumm.projectkye;
 
 import android.app.Activity;
-import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,7 @@ public class CustomListAdapter extends ArrayAdapter<String>
     private final String[] itemname;
     private final Integer[] imgid;
 
-    public CustomListAdapter(@NonNull Activity context, String[] itemname, Integer[] imgid) {
+    public CustomListAdapter(Activity context, String[] itemname, Integer[] imgid) {
         super(context, R.layout.list, itemname);
 
         this.context=context;
