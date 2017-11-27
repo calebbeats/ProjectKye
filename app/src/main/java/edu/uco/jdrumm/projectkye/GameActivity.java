@@ -31,6 +31,7 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
     private int level;
     private GameBoard gameBoard;
     MediaPlayer player;
+    int volume;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,6 +44,12 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
         if(extras != null)
         {
             level = extras.getInt("level");
+            volume = extras.getInt("volume");
+
+        }
+        else
+        {
+         volume = 100;
         }
         /*
         lbutton = (Button) findViewById(R.id.lbutton);
@@ -107,7 +114,10 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
 
         player = MediaPlayer.create(this, R.raw.game_music);
         player.setLooping(true);
-        player.setVolume(70,70);
+
+        System.out.println("Volume = " + volume);
+
+        player.setVolume(volume, volume);
         player.start();
 
         relativeLayout.addView(myCanvas);

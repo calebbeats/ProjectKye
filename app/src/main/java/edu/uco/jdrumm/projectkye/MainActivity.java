@@ -1,13 +1,15 @@
 package edu.uco.jdrumm.projectkye;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
 {
+
+    int volume;
 
     Button play, levels, options;
 
@@ -16,6 +18,17 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle extras = getIntent().getExtras();
+
+        if(extras == null)
+        {
+            volume = 100;
+        }
+        else
+        {
+            volume =  Integer.parseInt(extras.getString("volume"));
+        }
 
         play = (Button) findViewById(R.id.ButtonPlay);
         levels = (Button) findViewById(R.id.ButtonLevels);
@@ -27,14 +40,23 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 Intent i = new Intent(MainActivity.this, GameActivity.class);
+                i.putExtra("volume", volume);
                 startActivity(i);
             }
         });
 
         levels.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent(MainActivity.this, LevelSelectActivity.class);
+            i.putExtra("volume", volume);
+            startActivity(i);
+        }
+    });
+        options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, LevelSelectActivity.class);
+                Intent i = new Intent(MainActivity.this, OptionsActivity.class);
                 startActivity(i);
             }
         });
