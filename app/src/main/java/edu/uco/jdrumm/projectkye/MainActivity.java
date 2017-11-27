@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity
         }
         else
         {
-            volume =  Integer.parseInt(extras.getString("volume"));
+            volume =  extras.getInt("volume");
         }
 
         play = (Button) findViewById(R.id.ButtonPlay);
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, OptionsActivity.class);
+                i.putExtra("volume", volume);
                 startActivity(i);
             }
         });
