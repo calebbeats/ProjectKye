@@ -8,7 +8,7 @@ public class Diamond extends BaseObject implements Destroyable
     public Diamond(int x, int y)
     {
         super(x, y);
-        icon = R.drawable.diamond1;
+        icon = R.drawable.diamond2;
     }
 
     public int getFrequency()

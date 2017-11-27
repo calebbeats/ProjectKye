@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.SparseArray;
-import android.view.SurfaceView;
 
 import java.util.ArrayList;
 
@@ -46,7 +45,7 @@ public class GameBoard {
                     R.drawable.block,
                     R.drawable.block2,
                     R.drawable.block3,
-                    R.drawable.diamond1,
+                    //R.drawable.diamond1,
                     R.drawable.diamond2,
                     R.drawable.kye,
                     R.drawable.magnethorizontal,
