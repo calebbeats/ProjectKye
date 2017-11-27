@@ -31,21 +31,21 @@ public class LevelSelectActivity extends Activity
 
     Integer[] imgid=
             {
-                   // R.drawable.first,
-                  //  R.drawable.second,
-                  //  R.drawable.slider,
-                  //  R.drawable.zoo,
+                    R.drawable.first,
+                    R.drawable.second,
+                    R.drawable.slider,
+                    R.drawable.zoo,
                     R.drawable.diamond,
-                  //  R.drawable.counters,
-                  //  R.drawable.blocks,
-                  //  R.drawable.circus,
-                  //  R.drawable.gallery,
-                //    R.drawable.trapper,
-                 //   R.drawable.pintpot,
-               //     R.drawable.getout,
-                //    R.drawable.fallin,
-               //     R.drawable.adoorable,
-                //    R.drawable.rockyv
+                    R.drawable.counters,
+                    R.drawable.blocks,
+                    R.drawable.circus,
+                    R.drawable.gallery,
+                    R.drawable.trapper,
+                    R.drawable.pintpot,
+                    R.drawable.getout,
+                    R.drawable.fallin,
+                    R.drawable.adoorable,
+                    R.drawable.rockyv
             };
 
     @Override
