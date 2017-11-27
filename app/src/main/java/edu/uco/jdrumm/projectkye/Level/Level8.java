@@ -19,6 +19,7 @@ public class Level8 extends Level
     public Level8()
     {
         super();
+        setNextLevel(new Level9());
         levelMessage = "Ho hum, now for some work";
         levelName = "Circus";
     }
@@ -254,6 +255,8 @@ public class Level8 extends Level
                 new Block(3, 17),
                 new Wall(4, 17),
                 new Wall(5, 17),
+                new Wall(6, 17),
+                new Wall(7, 17),
                 new Wall(8, 17),
                 new Wall(9, 17),
                 new Wall(10, 17),

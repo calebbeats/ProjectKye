@@ -255,7 +255,13 @@ public class GameBoard {
 
     private boolean validMove(BaseObject o, BaseObject o2)
     {
-        return !(o2 instanceof Destroyable && !(o instanceof Kye) || (o instanceof SquareSlider && o2 instanceof Rotator));
+        if(o2 instanceof Destroyable && !(o instanceof Kye))
+            return false;
+        if(o instanceof SquareSlider && o2 instanceof Rotator)
+            return false;
+        if(o2 instanceof Monster && o instanceof Kye)
+            return false;
+        return true;
     }
 
     public void pushToInputQueue(Direction d)
@@ -263,15 +269,16 @@ public class GameBoard {
         inputQueue.add(d);
     }
 
-    Direction popFromInputQueue()
+    public Direction topFromInputQueue()
     {
-        if(inputQueue.size() > 0)
-        {
-            Direction d = inputQueue.get(0);
-            inputQueue.remove(0);
-            return d;
-        }
+        if(inputQueue.size() != 0)
+            return inputQueue.get(0);
         return null;
+    }
+
+    public void popFromInputQueue()
+    {
+        inputQueue.remove(0);
     }
 
     private boolean inBounds(int cordX, int cordY)

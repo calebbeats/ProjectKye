@@ -18,7 +18,7 @@ public class Kye extends Actor
     @Override
     public void action(GameBoard board)
     {
-        Direction d = board.popFromInputQueue();
+        Direction d = board.topFromInputQueue();
         if(d == null)
             return;
         int dx = 0, dy = 0;
@@ -37,7 +37,12 @@ public class Kye extends Actor
                 dx = -1;
         }
 
+        int oldX, oldY;
+        oldX = x;
+        oldY = y;
         board.moveGameObject(this, getCordX() + dx, getCordY() + dy);
+        if(x != oldX || y != oldY)
+            board.popFromInputQueue();
     }
 
     void kill(GameBoard board)

@@ -17,15 +17,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import edu.uco.jdrumm.projectkye.Game.GameBoard;
-import edu.uco.jdrumm.projectkye.Level.Level;
-import edu.uco.jdrumm.projectkye.Level.Level1;
-import edu.uco.jdrumm.projectkye.Level.Level2;
-import edu.uco.jdrumm.projectkye.Level.Level3;
-import edu.uco.jdrumm.projectkye.Level.Level4;
-import edu.uco.jdrumm.projectkye.Level.Level5;
-import edu.uco.jdrumm.projectkye.Level.Level6;
-import edu.uco.jdrumm.projectkye.Level.Level7;
-import edu.uco.jdrumm.projectkye.Level.Level8;
+import edu.uco.jdrumm.projectkye.Level.*;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 
 public class GameActivity extends AppCompatActivity implements PopupDialogFragment.OnFragmentInteractionListener
@@ -181,6 +173,12 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
                     break;
                 case 8:
                     l = new Level8();
+                    break;
+                case 9:
+                    l = new Level9();
+                    break;
+                case 10:
+                    l = new Level10();
                     break;
                 default:
                     l = new Level1();
