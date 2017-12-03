@@ -1,6 +1,7 @@
 package edu.uco.jdrumm.projectkye;
 
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +36,8 @@ public class PopupDialogFragment extends DialogFragment
 
     private TextView messageView, titleView;
     private Button quitButton, nextButton, okButton;
+
+    private ButtonPress button;
 
     public PopupDialogFragment() {
         // Required empty public constructor
@@ -74,6 +77,8 @@ public class PopupDialogFragment extends DialogFragment
         nextButton = (Button) getView().findViewById(R.id.nextButton);
         okButton = (Button) getView().findViewById(R.id.okButton);
 
+        button = ButtonPress.QUIT;
+
         nextButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -92,7 +97,7 @@ public class PopupDialogFragment extends DialogFragment
             @Override
             public void onClick(View view)
             {
-                mListener.onFragmentInteraction(ButtonPress.NEXT);
+                pressButton(ButtonPress.NEXT);
                 getActivity().getFragmentManager().beginTransaction().remove(us).commit();
             }
         });
@@ -102,9 +107,14 @@ public class PopupDialogFragment extends DialogFragment
             @Override
             public void onClick(View view)
             {
-                mListener.onFragmentInteraction(ButtonPress.QUIT);
+                getActivity().getFragmentManager().beginTransaction().remove(us).commit();
             }
         });
+    }
+
+    private void pressButton(ButtonPress bp)
+    {
+        button = bp;
     }
 
     @Override
@@ -124,6 +134,13 @@ public class PopupDialogFragment extends DialogFragment
         mListener = null;
     }
 
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mListener.onFragmentInteraction(button);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -137,10 +154,5 @@ public class PopupDialogFragment extends DialogFragment
     public interface OnFragmentInteractionListener
     {
         void onFragmentInteraction(ButtonPress b);
-    }
-
-    public enum ButtonPress
-    {
-        QUIT, NEXT
     }
 }

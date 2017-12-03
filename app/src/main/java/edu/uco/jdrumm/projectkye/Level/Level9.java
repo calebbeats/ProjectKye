@@ -17,6 +17,7 @@ public class Level9 extends Level
     public Level9()
     {
         super();
+        setNextLevel(new Level10());
         levelMessage = "Not bad for a beginner!";
         levelName = "Gallery";
     }

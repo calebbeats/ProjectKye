@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.uco.jdrumm.projectkye.GameLossDialogFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:textColor="@android:color/black"
+        android:text="That was the last Kye"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:paddingBottom="16dp"
+        android:textColor="@android:color/black"
+        android:text="Have another go" />
+
+    <View
+        android:paddingTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="5px"
+        android:background="@color/coolGreen"/>
+
+    <Button
+        android:id="@+id/okayButton2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"/>
+
+</LinearLayout>

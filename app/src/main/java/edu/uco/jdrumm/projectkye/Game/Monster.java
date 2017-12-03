@@ -7,6 +7,7 @@ public class Monster extends Actor
     private Monsters m;
     private int[] images;
     private int frame;
+    private boolean stopped;
 
     public Monster(int x, int y, Monsters m)
     {
@@ -63,60 +64,82 @@ public class Monster extends Actor
             }
         }
 
-        boolean wandering;
-        int dx, dy;
-        dx = dy = 0;
-        if(Math.random() < 0.5)
+        if(!stopped)
         {
-            //wandering = true;
-            switch((int)(Math.random() * 4))
-            {
-                case 0:
-                    dx = -1;
-                    break;
-                case 1:
-                    dx = 1;
-                    break;
-                case 2:
-                    dy = -1;
-                    break;
-                case 3:
-                    dy = 1;
-                    break;
-                default:
-                    return;
+            boolean wandering;
+            int dx, dy;
+            dx = dy = 0;
+            if (Math.random() < 0.5) {
+                wandering = true;
+                switch ((int) (Math.random() * 4)) {
+                    case 0:
+                        dx = -1;
+                        break;
+                    case 1:
+                        dx = 1;
+                        break;
+                    case 2:
+                        dy = -1;
+                        break;
+                    case 3:
+                        dy = 1;
+                        break;
+                    default:
+                        return;
+                }
+            } else {
+                wandering = false;
+                Kye k = board.getKye();
+                int tx, ty;
+                tx = k.getCordX() - x;
+                ty = k.getCordY() - y;
+
+                if (ty == 0) {
+                    if (tx > 0)
+                        dx = 1;
+                    else
+                        dx = -1;
+                } else {
+                    if (ty > 0)
+                        dy = 1;
+                    else
+                        dy = -1;
+                }
             }
+
+            if (!wandering || !(board.getAt(x + dx, y + dy) instanceof BlackHole))
+                board.pushGameObject(this, x + dx, y + dy);
         }
         else
-        {
-            //wandering = false;
-            Kye k = board.getKye();
-            int tx, ty;
-            tx = k.getCordX() - x;
-            ty = k.getCordY() - y;
-
-            if(ty == 0)
-            {
-                if(tx > 0)
-                    dx = 1;
-                else
-                    dx = -1;
-            }
-            else
-            {
-                if(ty > 0)
-                    dy = 1;
-                else
-                    dy = -1;
-            }
-        }
-
-        board.pushGameObject(this, x + dx, y + dy);
+            checkForMagnets(board);
 
         frame++;
         if(frame >= images.length)
             frame = 0;
         icon = images[frame];
+    }
+
+    public void stop()
+    {
+        stopped = true;
+    }
+
+    public void checkForMagnets(GameBoard board)
+    {
+        BaseObject o = board.getAt(x - 1, y);
+        if(o instanceof HorizontalMagnet)
+            return;
+        o = board.getAt(x + 1, y);
+        if(o instanceof HorizontalMagnet)
+            return;
+        o = board.getAt(x, y - 1);
+        if(o instanceof VerticalMagnet)
+            return;
+        o = board.getAt(x, y + 1);
+        if(o instanceof VerticalMagnet)
+            return;
+        stopped = false;
+        //action(board); //Might remove this. This makes it so the piece can take its action right after becoming unstuck
     }
 
     public enum Monsters

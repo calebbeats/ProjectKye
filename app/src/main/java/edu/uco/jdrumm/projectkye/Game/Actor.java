@@ -24,10 +24,5 @@ public abstract class Actor extends BaseObject
             return;
     }
 
-    private void pullToMagnet(GameBoard board)
-    {
-
-    }
-
     public abstract void action(GameBoard board);
 }

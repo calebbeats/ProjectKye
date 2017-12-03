@@ -23,9 +23,9 @@ public class SquareSlider extends ActorRotatable implements Moveable
         if(!stopped)
         {
             BaseObject o = board.getAt(x + dx, y + dy);
-            if (o == null)
-                board.moveGameObject(this, x + dx, y + dy);
-            else if (o instanceof Rotator)
+            if (!(o instanceof Rotator))
+                board.pushGameObject(this, x + dx, y + dy);
+            else
                 rotate(((Rotator) o).getRotation());
         }
         else

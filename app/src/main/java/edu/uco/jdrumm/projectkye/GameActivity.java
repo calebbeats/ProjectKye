@@ -20,14 +20,18 @@ import edu.uco.jdrumm.projectkye.Game.GameBoard;
 import edu.uco.jdrumm.projectkye.Level.*;
 import edu.uco.jdrumm.projectkye.Orientation.Direction;
 
-public class GameActivity extends AppCompatActivity implements PopupDialogFragment.OnFragmentInteractionListener
+public class GameActivity extends AppCompatActivity implements
+        PopupDialogFragment.OnFragmentInteractionListener,
+        RestartDialogFragment.OnFragmentInteractionListenerRestart,
+        GameWonDialogFragment.OnFragmentInteractionListenerGameWon,
+        GameLossDialogFragment.OnFragmentInteractionListenerGameLoss
 {
 
     private myCanvas myCanvas;
-    private Button lbutton, rbutton, ubutton, dbutton;
 
     //Inputs. True if currently pressed, false otherwise
-    private boolean left, right, up, down;
+    private boolean left, right, up, down, center, pressed;
+    private long ltime, rtime, utime, dtime;
     private int level;
     private GameBoard gameBoard;
     MediaPlayer player;
@@ -51,63 +55,6 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
         {
          volume = 100;
         }
-        /*
-        lbutton = (Button) findViewById(R.id.lbutton);
-        lbutton.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    left = true;
-                else if(event.getAction() == MotionEvent.ACTION_UP)
-                    left = false;
-                return true;
-            }
-        });
-
-        rbutton = (Button) findViewById(R.id.rbutton);
-        rbutton.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    right = true;
-                else if(event.getAction() == MotionEvent.ACTION_UP)
-                    right = false;
-                return true;
-            }
-        });
-
-        ubutton = (Button) findViewById(R.id.ubutton);
-        ubutton.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    up = true;
-                else if(event.getAction() == MotionEvent.ACTION_UP)
-                    up = false;
-                return true;
-            }
-        });
-
-        dbutton = (Button) findViewById(R.id.dbutton);
-        dbutton.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    down = true;
-                else if(event.getAction() == MotionEvent.ACTION_UP)
-                    down = false;
-                return true;
-            }
-        });
-        */
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.draw_frame);
         myCanvas = new myCanvas(getApplicationContext());
@@ -124,7 +71,8 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         player.stop();
     }
@@ -152,8 +100,6 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
             surfaceHolder.addCallback(new SurfaceHolderListener());
 
             density = getResources().getDisplayMetrics().density;
-
-
 
             //Initialize Game Objects
             gameBoard = new GameBoard(0, getResources(), this, density);
@@ -190,10 +136,26 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
                 case 10:
                     l = new Level10();
                     break;
+                case 11:
+                    l = new Level11();
+                    break;
+                case 12:
+                    l = new Level12();
+                    break;
+                case 13:
+                    l = new Level13();
+                    break;
+                case 14:
+                    l = new Level14();
+                    break;
+                case 15:
+                    l = new Level15();
+                    break;
                 default:
                     l = new Level1();
             }
             l.populateBoard(gameBoard);
+            gameBoard.setCurrentLevel(l);
         }
 
         @Override
@@ -205,6 +167,7 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
             switch(e.getAction())
             {
                 case MotionEvent.ACTION_DOWN:
+                    pressed = true;
                     if(ypos < displayHeight / 3)
                         up = true;
                     else if (ypos > displayHeight * 2 / 3)
@@ -216,10 +179,13 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
                             left = true;
                         else if(xpos > displayWidth * 2 / 3)
                             right = true;
+                        else
+                            center = true;
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    up = left = down = right = false;
+                    up = left = down = right = center = pressed = false;
+                    ltime = rtime = utime = dtime = 0;
                     break;
             }
             //System.out.println("(" + xpos + ", " + ypos + ")");
@@ -228,7 +194,7 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
 
         public void displayLevelEnd(String message, String name)
         {
-            drawingThread.interrupt();
+            gameBoard.pause();
             FragmentManager fm = getFragmentManager();
             PopupDialogFragment frag = PopupDialogFragment.newInstance();
             Bundle args = new Bundle();
@@ -241,9 +207,43 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
         public void startNextLevel()
         {
             gameBoard.loadNextLevel();
-            drawingThread.start();
+            gameBoard.unPause();
         }
 
+        public void promptRestart()
+        {
+            gameBoard.pause();
+            FragmentManager fm = getFragmentManager();
+            RestartDialogFragment frag = RestartDialogFragment.newInstance();
+            frag.show(fm, "frag2");
+        }
+
+        public void continueLevel()
+        {
+            gameBoard.unPause();
+        }
+
+        public void restartLevel()
+        {
+            gameBoard.restartLevel();
+            gameBoard.unPause();
+        }
+
+        public void displayGameEnd()
+        {
+            gameBoard.pause();
+            FragmentManager fm = getFragmentManager();
+            GameWonDialogFragment frag = GameWonDialogFragment.newInstance();
+            frag.show(fm, "frag3");
+        }
+
+        public void promptLoss()
+        {
+            gameBoard.pause();
+            FragmentManager fm = getFragmentManager();
+            GameLossDialogFragment frag = GameLossDialogFragment.newInstance();
+            frag.show(fm, "frag4");
+        }
     }
 
     private class SurfaceHolderListener implements SurfaceHolder.Callback
@@ -268,8 +268,11 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
                             long timePassed = System.currentTimeMillis() - cumTime;
 
                             try {
-                                if(timePassed < 1000 / myCanvas.FRAMES_PER_SECOND)
-                                    Thread.sleep(1000 / myCanvas.FRAMES_PER_SECOND - timePassed);
+                                int waitTime = 1000;
+                                if(gameBoard.inputQueueSize() > 0 && pressed)
+                                    waitTime = 250;
+                                if(timePassed < waitTime / myCanvas.FRAMES_PER_SECOND)
+                                    Thread.sleep(waitTime / myCanvas.FRAMES_PER_SECOND - timePassed);
                                 else
                                     Thread.sleep(5);
                                 //System.out.println(1000 / myCanvas.FRAMES_PER_SECOND  - timePassed);
@@ -280,8 +283,6 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
                             cumTime += System.currentTimeMillis() - cumTime;
                             gameBoard.updateGameObjects();
                             canvas.drawColor(Color.WHITE);
-                            Paint p = new Paint();
-                            p.setColor(Color.RED);
                             gameBoard.draw(canvas, getResources(), myCanvas.density, myCanvas.displayWidth, myCanvas.displayHeight);
                             myCanvas.surfaceHolder.unlockCanvasAndPost(canvas);
                         }
@@ -298,23 +299,44 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
                     {
                         if (left)
                         {
+                            ltime = System.currentTimeMillis();
                             gameBoard.pushToInputQueue(Direction.LEFT);
                             left = false;
                         }
                         if (right)
                         {
+                            rtime = System.currentTimeMillis();
                             gameBoard.pushToInputQueue(Direction.RIGHT);
                             right = false;
                         }
                         if (up)
                         {
+                            utime = System.currentTimeMillis();
                             gameBoard.pushToInputQueue(Direction.UP);
                             up = false;
                         }
                         if (down)
                         {
+                            dtime = System.currentTimeMillis();
                             gameBoard.pushToInputQueue(Direction.DOWN);
                             down = false;
+                        }
+                        if (center)
+                        {
+                            gameBoard.promptRestart();
+                            center = false;
+                        }
+                        if(gameBoard.inputQueueSize() == 0)
+                        {
+                            long t = System.currentTimeMillis();
+                            if (ltime != 0 && t - ltime > 500)
+                                gameBoard.pushToInputQueue(Direction.LEFT);
+                            if (rtime != 0 && t - rtime > 500)
+                                gameBoard.pushToInputQueue(Direction.RIGHT);
+                            if (utime != 0 && t - utime > 500)
+                                gameBoard.pushToInputQueue(Direction.UP);
+                            if (dtime != 0 && t - dtime > 500)
+                                gameBoard.pushToInputQueue(Direction.DOWN);
                         }
                     }
                 }
@@ -342,9 +364,9 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
     }
 
     @Override
-    public void onFragmentInteraction(PopupDialogFragment.ButtonPress b)
+    public void onFragmentInteraction(ButtonPress b)
     {
-        if(b == PopupDialogFragment.ButtonPress.NEXT)
+        if(b == ButtonPress.NEXT)
         {
             myCanvas.startNextLevel();
         }
@@ -353,5 +375,36 @@ public class GameActivity extends AppCompatActivity implements PopupDialogFragme
             Intent i = new Intent(GameActivity.this, LevelSelectActivity.class);
             startActivity(i);
         }
+    }
+
+
+    @Override
+    public void onFragmentInteractionRestart(ButtonPress b)
+    {
+        switch(b)
+        {
+            case QUIT:
+                Intent i = new Intent(GameActivity.this, LevelSelectActivity.class);
+                startActivity(i);
+                break;
+            case RESTART:
+                myCanvas.restartLevel();
+                break;
+            default:
+                myCanvas.continueLevel();
+        }
+    }
+
+    @Override
+    public void onFragmentInteractionGameWon()
+    {
+        Intent i = new Intent(GameActivity.this, MainActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void onFragmentInteractionGameLoss()
+    {
+        myCanvas.restartLevel();
     }
 }

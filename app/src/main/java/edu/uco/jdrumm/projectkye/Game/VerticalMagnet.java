@@ -24,22 +24,36 @@ public class VerticalMagnet extends Actor implements Moveable, Magnet
             board.moveGameObject(this, x, y - 1);
         else if(ou instanceof ActorRotatable)
             ((ActorRotatable) ou).stop();
-        else if(o instanceof Moveable && !(o instanceof VerticalMagnet))
+        else if(ou instanceof Monster)
+            ((Monster) ou).stop();
+        else if((o instanceof Moveable || o instanceof Monster) && !(o instanceof VerticalMagnet))
         {
             board.moveGameObject(o, x, y - 1);
-            if(o instanceof ActorRotatable)
-                ((ActorRotatable) o).stop();
+            if(ou == null)
+            {
+                if (o instanceof ActorRotatable)
+                    ((ActorRotatable) o).stop();
+                else if (o instanceof Monster)
+                    ((Monster) o).stop();
+            }
         }
 
         if(o2 instanceof Kye && od == null)
             board.moveGameObject(this, x, y + 1);
         else if(od instanceof ActorRotatable)
             ((ActorRotatable) od).stop();
-        else if(o2 instanceof Moveable && !(o2 instanceof VerticalMagnet))
+        else if(od instanceof Monster)
+            ((Monster) od).stop();
+        else if((o2 instanceof Moveable || o2 instanceof Monster) && !(o2 instanceof VerticalMagnet))
         {
             board.moveGameObject(o2, x, y + 1);
-            if(o2 instanceof ActorRotatable)
-                ((ActorRotatable) o2).stop();
+            if(od == null)
+            {
+                if (o2 instanceof ActorRotatable)
+                    ((ActorRotatable) o2).stop();
+                else if (o2 instanceof Monster)
+                    ((Monster) o2).stop();
+            }
         }
     }
 }

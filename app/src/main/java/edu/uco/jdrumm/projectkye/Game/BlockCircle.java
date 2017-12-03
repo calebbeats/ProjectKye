@@ -11,6 +11,6 @@ public class BlockCircle extends BaseObject implements Moveable, Round
     public BlockCircle(int x, int y)
     {
         super(x, y);
-        icon = R.drawable.block3;
+        icon = R.drawable.blockround;
     }
 }

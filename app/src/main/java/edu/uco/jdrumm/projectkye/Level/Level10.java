@@ -18,6 +18,7 @@ public class Level10 extends Level
     public Level10()
     {
         super();
+        setNextLevel(new Level11());
         levelMessage = "I hope you didn't just outrun 'em";
         levelName = "Trapper";
     }
@@ -84,7 +85,7 @@ public class Level10 extends Level
                 new BlockCircle(18, 14),
                 new Diamond(28, 14),
 
-                new Block(2, 15),
+                new BlockCircle(2, 15),
                 new Sentry(6, 15, Direction.UP),
                 new FuzzBlock(10, 15),
                 new SquareSlider(11, 15, Direction.LEFT),

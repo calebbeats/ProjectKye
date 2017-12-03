@@ -2,17 +2,28 @@ package edu.uco.jdrumm.projectkye.Game;
 
 import edu.uco.jdrumm.projectkye.R;
 
-public class Diamond extends BaseObject implements Destroyable
+public class Diamond extends Actor implements Destroyable
 {
 
     public Diamond(int x, int y)
     {
         super(x, y);
-        icon = R.drawable.diamond2;
+        if(Math.random() < 0.5)
+            icon = R.drawable.diamond1;
+        else
+            icon = R.drawable.diamond2;
+        frequency = 20;
     }
 
-    public int getFrequency()
+    @Override
+    public void action(GameBoard board)
     {
-        return 20;
+        if(Math.random() < 0.1)
+        {
+            if(icon == R.drawable.diamond1)
+                icon = R.drawable.diamond2;
+            else
+                icon = R.drawable.diamond1;
+        }
     }
 }

@@ -6,6 +6,7 @@ import edu.uco.jdrumm.projectkye.R;
 public class Kye extends Actor
 {
     private int startX, startY;
+    private ForceField ff;
 
     public Kye(int x, int y)
     {
@@ -41,14 +42,25 @@ public class Kye extends Actor
         oldX = x;
         oldY = y;
         board.moveGameObject(this, getCordX() + dx, getCordY() + dy);
-        if(x != oldX || y != oldY)
+        if(x != oldX || y != oldY || board.inputQueueSize() > 1)
             board.popFromInputQueue();
     }
 
     void kill(GameBoard board)
     {
         board.respawnKye(startX, startY);
+        board.loseLife();
         x = startX;
         y = startY;
+    }
+
+    public void setForceField(ForceField ff)
+    {
+        this.ff = ff;
+    }
+
+    public ForceField getForceField()
+    {
+        return ff;
     }
 }

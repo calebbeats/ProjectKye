@@ -23,7 +23,7 @@ public class RoundSlider extends ActorRotatable implements Moveable, Round
         if(!stopped)
         {
             BaseObject o = board.getAt(x + dx, y + dy);
-            if (o == null)
+            if (o == null || o instanceof BlackHole)
                 board.moveGameObject(this, x + dx, y + dy);
             else if (o instanceof Rotator)
                 rotate(((Rotator) o).getRotation());

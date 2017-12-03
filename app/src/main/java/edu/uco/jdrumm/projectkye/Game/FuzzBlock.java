@@ -11,6 +11,6 @@ public class FuzzBlock extends BaseObject implements Destroyable
     public FuzzBlock(int x, int y)
     {
         super(x, y);
-        icon = R.drawable.block2;
+        icon = R.drawable.blockfuzz;
     }
 }

@@ -39,4 +39,9 @@ public abstract class BaseObject {
     public void setCordY(int y) {
         this.y = y;
     }
+
+    public int getFrequency()
+    {
+        return frequency;
+    }
 }
